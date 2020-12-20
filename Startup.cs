@@ -12,6 +12,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using lapr5_masterdata_viagens.Services;
+using Microsoft.EntityFrameworkCore;
+using lapr5_masterdata_viagens.Repositories;
 
 namespace lapr5_masterdata_viagens
 {
@@ -27,6 +29,10 @@ namespace lapr5_masterdata_viagens
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<ViagensDbContext>(opt =>
+                                                           opt.UseInMemoryDatabase("Data"));
+
+            services.AddTransient<IVehicleRepo, VehicleRepo>();
             services.AddTransient<VehicleService>();
 
             services.AddControllers();
