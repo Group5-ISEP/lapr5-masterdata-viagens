@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using lapr5_masterdata_viagens.Domain.Vehicles;
+using System.Collections.Generic;
+
 
 namespace lapr5_masterdata_viagens.Controllers
 {
@@ -13,6 +15,12 @@ namespace lapr5_masterdata_viagens.Controllers
         public VehicleController(VehicleService service)
         {
             _service = service;
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<VehicleDTO>>> GetAll()
+        {
+            return await _service.GetAllAsync();
         }
 
         [HttpPost]

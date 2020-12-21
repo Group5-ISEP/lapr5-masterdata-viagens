@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using lapr5_masterdata_viagens.Shared;
 using lapr5_masterdata_viagens.Domain.Shared;
+using System.Collections.Generic;
 
 namespace lapr5_masterdata_viagens.Domain.Vehicles
 {
@@ -27,5 +28,15 @@ namespace lapr5_masterdata_viagens.Domain.Vehicles
 
             return Result<VehicleDTO>.Ok(VehicleMapper.ToDto(vehicleSaved));
         }
+
+        public async Task<List<VehicleDTO>> GetAllAsync()
+        {
+            var list = await this._repo.GetAllAsync();
+
+            List<VehicleDTO> listDto = list.ConvertAll<VehicleDTO>(v => VehicleMapper.ToDto(v));
+
+            return listDto;
+        }
+
     }
 }
