@@ -2,19 +2,24 @@ using System;
 using lapr5_masterdata_viagens.Shared;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using lapr5_masterdata_viagens.Domain.Shared;
 
 namespace lapr5_masterdata_viagens.Domain.Vehicles
 {
-    public class Vehicle
+    public class Vehicle : Entity<VehicleId>, IAggregateRoot
     {
-        public Guid Id { get; private set; }
         public string CarPlateCode { get; private set; }
         public string VIN { get; private set; }
         public DateTime ServiceStartDate { get; private set; }
         public string VehicleTypeID { get; private set; }
-        private Vehicle(Guid id, string carPlateCode, string vin, string vehicleTypeId, DateTime serviceStarDate)
+
+        private Vehicle()
         {
-            this.Id = id;
+            //FOR ORM
+        }
+        private Vehicle(string id, string carPlateCode, string vin, string vehicleTypeId, DateTime serviceStarDate)
+        {
+            this.Id = new VehicleId(id);
             this.CarPlateCode = carPlateCode;
             this.VIN = vin;
             this.VehicleTypeID = vehicleTypeId;
@@ -27,12 +32,7 @@ namespace lapr5_masterdata_viagens.Domain.Vehicles
             string typeid = dto.VehicleTypeID;
             string vin = dto.VIN;
             string datestring = dto.ServiceStartDate;
-            Guid id;
-
-            if (dto.Id == null)
-                id = Guid.NewGuid();
-            else
-                id = Guid.Parse(dto.Id);
+            string id = dto.Id;
 
             if (platecode == null || Regex.IsMatch(platecode, "^([A-Z]{2}-[0-9]{2}-[0-9]{2})|([0-9]{2}-[A-Z]{2}-[0-9]{2})|([0-9]{2}-[0-9]{2}-[A-Z]{2})$") == false)
                 return Result<Vehicle>.Fail("Vehicle must have a plate code in format xx-xx-xx, 2 pair of numbers + 1 pair of uppercase letters");
