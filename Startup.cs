@@ -14,6 +14,7 @@ using Microsoft.OpenApi.Models;
 using lapr5_masterdata_viagens.Services;
 using Microsoft.EntityFrameworkCore;
 using lapr5_masterdata_viagens.Repositories;
+using lapr5_masterdata_viagens.Domain.Vehicle;
 
 namespace lapr5_masterdata_viagens
 {

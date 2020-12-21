@@ -1,10 +1,9 @@
 using System;
 using lapr5_masterdata_viagens.Shared;
-using lapr5_masterdata_viagens.DTOs;
 using System.Globalization;
 using System.Text.RegularExpressions;
 
-namespace lapr5_masterdata_viagens.Domain
+namespace lapr5_masterdata_viagens.Domain.Vehicle
 {
     public class Vehicle
     {
@@ -41,7 +40,7 @@ namespace lapr5_masterdata_viagens.Domain
             if (vin == null || Regex.IsMatch(vin, "^[0-9A-Z]{17}$") == false)
                 return Result<Vehicle>.Fail("Vehicle must have a VIN");
 
-            if (datestring == null || Regex.IsMatch(datestring, "^[0-9]{4}-[0-9]{2}-[0-9]{4}$") == false)
+            if (datestring == null || Regex.IsMatch(datestring, "^[0-9]{4}-[0-9]{2}-[0-9]{2}$") == false)
                 return Result<Vehicle>.Fail("Vehicle must have a service start date in form yyyy-MM-dd");
 
             if (typeid == null)

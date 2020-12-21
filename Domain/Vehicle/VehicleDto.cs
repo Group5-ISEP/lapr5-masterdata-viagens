@@ -1,4 +1,4 @@
-namespace lapr5_masterdata_viagens.DTOs
+namespace lapr5_masterdata_viagens.Domain.Vehicle
 {
     public class VehicleDTO
     {

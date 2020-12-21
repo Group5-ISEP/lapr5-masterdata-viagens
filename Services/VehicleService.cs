@@ -1,9 +1,6 @@
 using System.Threading.Tasks;
-using lapr5_masterdata_viagens.DTOs;
+using lapr5_masterdata_viagens.Domain.Vehicle;
 using lapr5_masterdata_viagens.Shared;
-using lapr5_masterdata_viagens.Domain;
-using lapr5_masterdata_viagens.Mappers;
-using lapr5_masterdata_viagens.Repositories;
 
 namespace lapr5_masterdata_viagens.Services
 {

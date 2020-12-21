@@ -1,8 +1,6 @@
 using System.Globalization;
-using lapr5_masterdata_viagens.DTOs;
-using lapr5_masterdata_viagens.Domain;
 
-namespace lapr5_masterdata_viagens.Mappers
+namespace lapr5_masterdata_viagens.Domain.Vehicle
 {
     public class VehicleMapper
     {

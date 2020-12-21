@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using lapr5_masterdata_viagens.DTOs;
+using lapr5_masterdata_viagens.Domain.Vehicle;
 using lapr5_masterdata_viagens.Services;
 
 namespace lapr5_masterdata_viagens.Controllers

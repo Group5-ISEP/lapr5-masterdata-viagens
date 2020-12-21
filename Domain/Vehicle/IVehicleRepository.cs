@@ -1,7 +1,6 @@
-using lapr5_masterdata_viagens.Domain;
 using System.Threading.Tasks;
 
-namespace lapr5_masterdata_viagens.Repositories
+namespace lapr5_masterdata_viagens.Domain.Vehicle
 {
     public interface IVehicleRepo
     {

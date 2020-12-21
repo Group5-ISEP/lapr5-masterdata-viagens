@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using lapr5_masterdata_viagens.Domain;
+using lapr5_masterdata_viagens.Domain.Vehicle;
 
 namespace lapr5_masterdata_viagens.Repositories
 {
@@ -15,7 +15,8 @@ namespace lapr5_masterdata_viagens.Repositories
 
         public async Task<Vehicle> Save(Vehicle v)
         {
-            return v;
+            //var ret = await this._objs.AddAsync(v);
+            return v;//ret.Entity;
         }
     }
 }
