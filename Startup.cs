@@ -11,10 +11,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using lapr5_masterdata_viagens.Services;
+using lapr5_masterdata_viagens.Domain.Vehicles;
+using lapr5_masterdata_viagens.Infrastructure;
+using lapr5_masterdata_viagens.Infrastructure.Vehicles;
 using Microsoft.EntityFrameworkCore;
-using lapr5_masterdata_viagens.Repositories;
-using lapr5_masterdata_viagens.Domain.Vehicle;
 
 namespace lapr5_masterdata_viagens
 {

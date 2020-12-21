@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using lapr5_masterdata_viagens.Domain.Vehicle;
+using lapr5_masterdata_viagens.Domain.Vehicles;
 
-namespace lapr5_masterdata_viagens.Repositories
+namespace lapr5_masterdata_viagens.Infrastructure
 {
     public class ViagensDbContext : DbContext
     {

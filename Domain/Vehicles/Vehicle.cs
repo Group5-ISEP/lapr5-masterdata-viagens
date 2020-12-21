@@ -3,7 +3,7 @@ using lapr5_masterdata_viagens.Shared;
 using System.Globalization;
 using System.Text.RegularExpressions;
 
-namespace lapr5_masterdata_viagens.Domain.Vehicle
+namespace lapr5_masterdata_viagens.Domain.Vehicles
 {
     public class Vehicle
     {

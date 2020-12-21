@@ -1,8 +1,7 @@
 using System.Threading.Tasks;
-using lapr5_masterdata_viagens.Domain.Vehicle;
 using lapr5_masterdata_viagens.Shared;
 
-namespace lapr5_masterdata_viagens.Services
+namespace lapr5_masterdata_viagens.Domain.Vehicles
 {
     public class VehicleService
     {
