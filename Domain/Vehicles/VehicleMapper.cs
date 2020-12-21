@@ -7,7 +7,7 @@ namespace lapr5_masterdata_viagens.Domain.Vehicles
         public static VehicleDTO ToDto(Vehicle v)
         {
             VehicleDTO dto = new VehicleDTO();
-            dto.Id = v.Id.ToString();
+            dto.Id = v.Id.AsString();
             dto.CarPlateCode = v.CarPlateCode;
             dto.VIN = v.VIN;
             dto.VehicleTypeID = v.VehicleTypeID;
