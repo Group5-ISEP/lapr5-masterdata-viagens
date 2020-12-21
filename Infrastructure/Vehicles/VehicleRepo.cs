@@ -1,22 +1,14 @@
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using lapr5_masterdata_viagens.Domain.Vehicles;
+using lapr5_masterdata_viagens.Infrastructure.Shared;
 
 namespace lapr5_masterdata_viagens.Infrastructure.Vehicles
 {
-    public class VehicleRepo : IVehicleRepo
+    public class VehicleRepo : BaseRepository<Vehicle, VehicleId>, IVehicleRepo
     {
-        private readonly DbSet<Vehicle> _objs;
-
-        public VehicleRepo(ViagensDbContext context)
+        public VehicleRepo(ViagensDbContext context) : base(context.Vehicles)
         {
-            this._objs = context.Vehicles;
-        }
-
-        public async Task<Vehicle> Save(Vehicle v)
-        {
-            //var ret = await this._objs.AddAsync(v);
-            return v;//ret.Entity;
         }
     }
 }
