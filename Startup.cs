@@ -15,6 +15,9 @@ using lapr5_masterdata_viagens.Domain.Vehicles;
 using lapr5_masterdata_viagens.Infrastructure;
 using lapr5_masterdata_viagens.Infrastructure.Vehicles;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using lapr5_masterdata_viagens.Infrastructure.Shared;
+using lapr5_masterdata_viagens.Domain.Shared;
 
 namespace lapr5_masterdata_viagens
 {
@@ -31,8 +34,10 @@ namespace lapr5_masterdata_viagens
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ViagensDbContext>(opt =>
-                                                           opt.UseInMemoryDatabase("Data"));
+                opt.UseInMemoryDatabase("ViagensDB")
+                .ReplaceService<IValueConverterSelector, StronglyEntityIdValueConverterSelector>());
 
+            services.AddTransient<IUnitOfWork,UnitOfWork>();
             services.AddTransient<IVehicleRepo, VehicleRepo>();
             services.AddTransient<VehicleService>();
 
