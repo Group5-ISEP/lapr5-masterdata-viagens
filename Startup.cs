@@ -34,10 +34,10 @@ namespace lapr5_masterdata_viagens
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ViagensDbContext>(opt =>
-                opt.UseInMemoryDatabase("ViagensDB")
+                opt.UseSqlite("Data Source=db/teste.db")
                 .ReplaceService<IValueConverterSelector, StronglyEntityIdValueConverterSelector>());
 
-            services.AddTransient<IUnitOfWork,UnitOfWork>();
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddTransient<IVehicleRepo, VehicleRepo>();
             services.AddTransient<VehicleService>();
 
