@@ -2,22 +2,50 @@
 
 .NET Core 5 Rest API using MVC structure. Entity Framework and SQLite used for persistence.
 
-## Run project
+## Setup
+
+**Install .NET Core 5 and make sure .NET CLI is on the PATH using**
+```
+dotnet --version
+```
+
+The setup script at the root folder installs dependecies using .NET CLI commands.
 
 ```
-dotnet run
+#BASH
+./setup.sh
+
+or
+
+#POWERSHELL
+./setup.ps
+```
+
+## Run project
+
+Run the script file for
+
+```
+#BASH
+./run.sh
+
+or
+
+#POWERSHELL
+./run.ps
+```
+
+## Test project
+
+Runs **NUnit** project, which runs tests to the API project at `./Viagens.Tests/`
+
+```
+dotnet test
 ```
 
 ## Entity Framework and Migrations
 
-Must run this the first time. 
-
-```bash
-dotnet add package Microsoft.EntityFrameworkCore.Sqlite
-dotnet tool install --global dotnet-ef
-dotnet add package Microsoft.EntityFrameworkCore.Design
-dotnet ef database update
-```
+`Inside the Viagens.API` project.
 
 If any changes are made to the domain schema, use this: 
 ```
