@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using lapr5_masterdata_viagens.Infrastructure;
 
 namespace lapr5_masterdata_viagens.Migrations
 {
     [DbContext(typeof(ViagensDbContext))]
-    partial class ViagensDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201225193901_DriverAdded")]
+    partial class DriverAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
