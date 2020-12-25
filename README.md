@@ -45,9 +45,20 @@ dotnet test
 
 ## Entity Framework and Migrations
 
-`Inside the Viagens.API` project.
-
 If any changes are made to the domain schema, use this: 
 ```
-dotnet ef migrations add <whatever name to give>
+#BASH
+./update_migrations.sh <whatever name>
+
+or
+
+#POWERSHELL
+./update_migrations.ps <whatever name>
+```
+
+
+## Build
+
+```
+dotnet build
 ```
