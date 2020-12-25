@@ -18,6 +18,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using lapr5_masterdata_viagens.Infrastructure.Shared;
 using lapr5_masterdata_viagens.Domain.Shared;
+using lapr5_masterdata_viagens.Domain.Drivers;
+using lapr5_masterdata_viagens.Infrastructure.Drivers;
 
 namespace lapr5_masterdata_viagens
 {
@@ -40,6 +42,8 @@ namespace lapr5_masterdata_viagens
             services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddTransient<IVehicleRepo, VehicleRepo>();
             services.AddTransient<VehicleService>();
+            services.AddTransient<IDriverRepo, DriverRepo>();
+            services.AddTransient<DriverService>();
 
             services.AddControllers();
 
