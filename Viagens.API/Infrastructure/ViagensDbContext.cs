@@ -1,5 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using lapr5_masterdata_viagens.Domain.Vehicles;
+using lapr5_masterdata_viagens.Domain.Drivers;
+using System;
+using System.Collections.Generic;
 
 namespace lapr5_masterdata_viagens.Infrastructure
 {
@@ -12,6 +15,8 @@ namespace lapr5_masterdata_viagens.Infrastructure
 
         public DbSet<Vehicle> Vehicles { get; set; }
 
+        public DbSet<Driver> Drivers { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //Write Fluent API configurations here
@@ -19,6 +24,7 @@ namespace lapr5_masterdata_viagens.Infrastructure
             //Property Configurations
 
             ConfigureVehicles(modelBuilder);
+            ConfigureDrivers(modelBuilder);
         }
 
         private void ConfigureVehicles(ModelBuilder modelBuilder)
@@ -50,5 +56,49 @@ namespace lapr5_masterdata_viagens.Infrastructure
                 .Property(v => v.VehicleTypeID)
                 .IsRequired();
         }
+
+        private void ConfigureDrivers(ModelBuilder modelBuilder)
+        {
+            //ID
+            modelBuilder.Entity<Driver>()
+                .HasKey(d => d.Id);
+
+            //Name
+            modelBuilder.Entity<Driver>()
+                .Property(d => d.Name)
+                .IsRequired();
+
+            //Birth date
+            modelBuilder.Entity<Driver>()
+                .Property(d => d.BirthDate)
+                .IsRequired();
+
+            //License number
+            modelBuilder.Entity<Driver>()
+                .Property(d => d.DriverLicenseNumber)
+                .IsRequired();
+            modelBuilder.Entity<Driver>()
+                .HasIndex(d => d.DriverLicenseNumber)
+                .IsUnique();
+
+            //License expiration date
+            modelBuilder.Entity<Driver>()
+                .Property(d => d.DriverLicenseExpirationDate)
+                .IsRequired();
+
+            //Type IDs list
+            modelBuilder.Entity<Driver>()
+                .Property(d => d.TypesIDs)
+                .IsRequired();
+            modelBuilder.Entity<Driver>()
+                .Property(d => d.TypesIDs)
+                .HasConversion(
+                    v => string.Join(',', v),
+                    v => new List<string>(v.Split(',', StringSplitOptions.RemoveEmptyEntries))
+                );
+
+        }
     }
+
+
 }
