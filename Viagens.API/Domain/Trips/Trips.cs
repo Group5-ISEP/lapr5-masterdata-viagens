@@ -31,13 +31,15 @@ namespace lapr5_masterdata_viagens.Domain.Trips
         public static Result<Trip> Create(int startTime, PathDTO pathDTO)
         {
 
+            if (startTime < 0)
+                return Result<Trip>.Fail("Trip start time must be equal or greater than 0");
+            if (pathDTO == null)
+                return Result<Trip>.Fail("Path cant be null");
+
+
             var PathId = pathDTO.PathId;
             var LineId = pathDTO.LineId;
             var Orientation = pathDTO.Orientation;
-
-            if (startTime < 0)
-                return Result<Trip>.Fail("Trip start time must be greater than 0");
-
             var passingTimes = new List<PassingTime>();
 
             //passing time in start node

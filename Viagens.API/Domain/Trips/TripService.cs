@@ -38,6 +38,12 @@ namespace lapr5_masterdata_viagens.Domain.Trips
         private Result<List<Trip>> GenerateTrips(CreateTripsDTO dto)
         {
 
+            if (dto.Frequency < 1)
+                return Result<List<Trip>>.Fail("Frequency must be more than 0");
+
+            if (dto.NumberOfTrips < 1)
+                return Result<List<Trip>>.Fail("Number of trips must be more than 0");
+
             var TripList = new List<Trip>();
 
             //Generate the trips of the To path
