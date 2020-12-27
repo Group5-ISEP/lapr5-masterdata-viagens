@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-
+using System.Linq;
 namespace lapr5_masterdata_viagens.Domain.Trips
 {
     public class TripMapper
@@ -10,9 +10,9 @@ namespace lapr5_masterdata_viagens.Domain.Trips
             dto.Id = trip.Id.AsString();
             dto.LineID = trip.LineID;
             dto.Orientation = trip.Orientation;
-            dto.PathID = trip.PathID;
-            dto.PassingTimes = new List<TripDTO.PassingTimeDTO>();
-
+            dto.PathID = trip.PathID; 
+            
+            var list = new List<TripDTO.PassingTimeDTO>();
             foreach (var passingtime in trip.PassingTimes)
             {
                 var passingTimeDTO = new TripDTO.PassingTimeDTO()
@@ -20,8 +20,11 @@ namespace lapr5_masterdata_viagens.Domain.Trips
                     NodeID = passingtime.NodeID,
                     TimeInstant = passingtime.TimeInstant
                 };
-                dto.PassingTimes.Add(passingTimeDTO);
+                list.Add(passingTimeDTO);
             }
+
+
+            dto.PassingTimes = list.OrderBy(p => p.TimeInstant).ToList();
 
             return dto;
         }
