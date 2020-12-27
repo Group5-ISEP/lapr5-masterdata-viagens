@@ -15,15 +15,9 @@ namespace lapr5_masterdata_viagens.Infrastructure.Trips
         }
 
         //Not currently used
-        public async Task<List<Trip>> GetAllWithPassingTimes()
+        public async Task<List<Trip>> GetByLine(string lineId)
         {
-            var list = this._objs.Include(t => t.PassingTimes).ToList();
-
-            // orders the passing times
-            foreach (var trip in list)
-            {
-                trip.PassingTimes.OrderBy(p => p.TimeInstant);
-            }
+            var list = this._objs.Include(t => t.PassingTimes).Where(t => t.LineID == lineId).ToList();
 
             return list;
         }
