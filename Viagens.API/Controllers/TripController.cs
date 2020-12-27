@@ -26,5 +26,16 @@ namespace lapr5_masterdata_viagens.Controllers
             }
             return Created("api/trips/", result.Value);
         }
+
+        [HttpGet("{lineId}")]
+        public async Task<ActionResult<List<TripDTO>>> GetByLine(string lineId)
+        {
+            var result = await _service.GetByLine(lineId);
+            if (result.IsSuccess == false)
+            {
+                return Conflict(result.Error);
+            }
+            return Ok(result.Value);
+        }
     }
 }
