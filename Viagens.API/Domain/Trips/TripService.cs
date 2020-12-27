@@ -68,7 +68,7 @@ namespace lapr5_masterdata_viagens.Domain.Trips
             //Generate the trips of the From path
             for (int tripnumber = 0; tripnumber < dto.NumberOfTrips; tripnumber++)
             {
-                var startTime = dto.StartTime + (tripnumber * dto.Frequency);
+                var startTime = startTimeFromPath + (tripnumber * dto.Frequency);
 
                 var result = Trip.Create(startTime, dto.PathFrom);
                 if (result.IsSuccess == false)
