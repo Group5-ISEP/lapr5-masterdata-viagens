@@ -20,9 +20,9 @@ namespace lapr5_masterdata_viagens.Domain.Drivers
         {
             //FOR ORM
         }
-        private Driver(string id, string name, DateTime birthDate, string licenseNumber, DateTime licenseExpirationDate, List<string> types)
+        private Driver(string name, DateTime birthDate, string licenseNumber, DateTime licenseExpirationDate, List<string> types)
         {
-            this.Id = new DriverId(id);
+            this.Id = new DriverId(Guid.NewGuid().ToString());
             this.Name = name;
             this.BirthDate = birthDate;
             this.DriverLicenseNumber = licenseNumber;
@@ -37,7 +37,6 @@ namespace lapr5_masterdata_viagens.Domain.Drivers
             string DriverLicenseNumber = dto.DriverLicenseNumber;
             string DriverLicenseExpirationDateString = dto.DriverLicenseExpirationDate;
             List<string> Types = dto.TypesIDs;
-            string Id = dto.Id;
 
             if (Name == null)
                 return Result<Driver>.Fail("Driver must have a name");
@@ -57,7 +56,7 @@ namespace lapr5_masterdata_viagens.Domain.Drivers
 
             DateTime BirthDate = DateTime.ParseExact(BirthDateString, "yyyy-MM-dd", CultureInfo.InvariantCulture);
             DateTime LicenseExpirationDate = DateTime.ParseExact(DriverLicenseExpirationDateString, "yyyy-MM-dd", CultureInfo.InvariantCulture);
-            Driver Driver = new Driver(Id, Name, BirthDate, DriverLicenseNumber, LicenseExpirationDate, Types);
+            Driver Driver = new Driver(Name, BirthDate, DriverLicenseNumber, LicenseExpirationDate, Types);
             return Result<Driver>.Ok(Driver);
         }
     }

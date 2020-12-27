@@ -17,9 +17,9 @@ namespace lapr5_masterdata_viagens.Domain.Vehicles
         {
             //FOR ORM
         }
-        private Vehicle(string id, string carPlateCode, string vin, string vehicleTypeId, DateTime serviceStarDate)
+        private Vehicle(string carPlateCode, string vin, string vehicleTypeId, DateTime serviceStarDate)
         {
-            this.Id = new VehicleId(id);
+            this.Id = new VehicleId(Guid.NewGuid().ToString());
             this.CarPlateCode = carPlateCode;
             this.VIN = vin;
             this.VehicleTypeID = vehicleTypeId;
@@ -32,7 +32,6 @@ namespace lapr5_masterdata_viagens.Domain.Vehicles
             string typeid = dto.VehicleTypeID;
             string vin = dto.VIN;
             string datestring = dto.ServiceStartDate;
-            string id = dto.Id;
 
             if (platecode == null || Regex.IsMatch(platecode, "^([A-Z]{2}-[0-9]{2}-[0-9]{2})|([0-9]{2}-[A-Z]{2}-[0-9]{2})|([0-9]{2}-[0-9]{2}-[A-Z]{2})$") == false)
                 return Result<Vehicle>.Fail("Vehicle must have a plate code in format xx-xx-xx, 2 pair of numbers + 1 pair of uppercase letters");
@@ -48,7 +47,7 @@ namespace lapr5_masterdata_viagens.Domain.Vehicles
 
 
             DateTime date = DateTime.ParseExact(datestring, "yyyy-MM-dd", CultureInfo.InvariantCulture);
-            Vehicle vehicle = new Vehicle(id, platecode, vin, typeid, date);
+            Vehicle vehicle = new Vehicle(platecode, vin, typeid, date);
             return Result<Vehicle>.Ok(vehicle);
         }
     }
