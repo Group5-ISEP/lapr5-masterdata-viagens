@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using lapr5_masterdata_viagens.Domain.Vehicles;
 using lapr5_masterdata_viagens.Domain.Drivers;
+using lapr5_masterdata_viagens.Domain.Trips;
 using System;
 using System.Collections.Generic;
 
@@ -17,6 +18,9 @@ namespace lapr5_masterdata_viagens.Infrastructure
 
         public DbSet<Driver> Drivers { get; set; }
 
+        public DbSet<Trip> Trips { get; set; }
+        public DbSet<PassingTime> PassingTimes { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //Write Fluent API configurations here
@@ -25,6 +29,7 @@ namespace lapr5_masterdata_viagens.Infrastructure
 
             ConfigureVehicles(modelBuilder);
             ConfigureDrivers(modelBuilder);
+            ConfigureTrips(modelBuilder);
         }
 
         private void ConfigureVehicles(ModelBuilder modelBuilder)
@@ -97,6 +102,18 @@ namespace lapr5_masterdata_viagens.Infrastructure
                     v => new List<string>(v.Split(',', StringSplitOptions.RemoveEmptyEntries))
                 );
 
+        }
+
+        private void ConfigureTrips(ModelBuilder modelBuilder)
+        {
+            //ID
+            modelBuilder.Entity<Trip>()
+                .HasKey(t => t.Id);
+
+            //Passing times mapping
+            modelBuilder.Entity<Trip>()
+                .HasMany(t => t.PassingTimes)
+                .WithOne();
         }
     }
 
