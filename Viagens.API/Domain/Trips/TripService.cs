@@ -16,6 +16,21 @@ namespace lapr5_masterdata_viagens.Domain.Trips
             this._repo = repo;
         }
 
+
+        public async Task<Result<List<TripDTO>>> GetByLine(string lineId)
+        {
+            var result = await this._repo.GetByLine(lineId);
+
+            var dtolist = new List<TripDTO>();
+
+            foreach (var trip in result)
+            {
+                dtolist.Add(TripMapper.ToDto(trip));
+            }
+
+            return Result<List<TripDTO>>.Ok(dtolist);
+        }
+
         public async Task<Result<List<TripDTO>>> CreateTrips(CreateTripsDTO dto)
         {
             var result = GenerateTrips(dto);
