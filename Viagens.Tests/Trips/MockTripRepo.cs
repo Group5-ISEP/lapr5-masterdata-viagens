@@ -31,5 +31,11 @@ namespace Viagens.Tests
         {
             _list.Remove(obj);
         }
+
+        public async Task<List<Trip>> GetByLine(string lineId)
+        {
+            return _list.FindAll(t => t.LineID == lineId);
+        }
+
     }
 }
