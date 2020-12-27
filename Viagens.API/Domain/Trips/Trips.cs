@@ -47,7 +47,7 @@ namespace lapr5_masterdata_viagens.Domain.Trips
             //generate the other passing times
             var segments = pathDTO.Segments;
             var timeInstant = startTime;
-            for (int position = 1; position < segments.Count; position++)
+            for (int position = 1; position <= segments.Count; position++)
             {
                 var segment = segments.Find(seg => seg.Order == position);
                 timeInstant += segment.Duration;
