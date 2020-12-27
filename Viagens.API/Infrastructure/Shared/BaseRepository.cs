@@ -7,23 +7,23 @@ using lapr5_masterdata_viagens.Domain.Shared;
 
 namespace lapr5_masterdata_viagens.Infrastructure.Shared
 {
-    public class BaseRepository<TEntity,TEntityId> : IRepository<TEntity,TEntityId>
+    public class BaseRepository<TEntity, TEntityId> : IRepository<TEntity, TEntityId>
     where TEntity : Entity<TEntityId>
     where TEntityId : EntityId
     {
-        private readonly DbSet<TEntity> _objs;
-        
+        protected readonly DbSet<TEntity> _objs;
+
         public BaseRepository(DbSet<TEntity> objs)
         {
             this._objs = objs ?? throw new ArgumentNullException(nameof(objs));
-        
+
         }
 
         public async Task<List<TEntity>> GetAllAsync()
         {
             return await this._objs.ToListAsync();
         }
-        
+
         public async Task<TEntity> GetByIdAsync(TEntityId id)
         {
             //return await this._context.Categories.FindAsync(id);
