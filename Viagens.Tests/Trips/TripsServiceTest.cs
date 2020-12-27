@@ -9,18 +9,23 @@ namespace Viagens.Tests
     {
         private TripService _service = new TripService(new MockTripRepo(), new MockUnitOfWork());
 
-        CreateTripsDTO sample = new CreateTripsDTO()
+        CreateTripsDTO sample;
+
+        [SetUp]
+        public void SetupBeforeEachTest()
         {
-            Frequency = 300,
-            NumberOfTrips = 2,
-            StartTime = 0,
-            PathTo = new PathDTO()
+            sample = new CreateTripsDTO()
             {
-                LineId = "Line:1",
-                PathId = "Path:1",
-                IsEmpty = false,
-                Orientation = "To",
-                Segments = new List<SegmentDTO>(){
+                Frequency = 300,
+                NumberOfTrips = 2,
+                StartTime = 0,
+                PathTo = new PathDTO()
+                {
+                    LineId = "Line:1",
+                    PathId = "Path:1",
+                    IsEmpty = false,
+                    Orientation = "To",
+                    Segments = new List<SegmentDTO>(){
                         new SegmentDTO(){
                             StartNodeId = "Node:1",
                             EndNodeId="Node:2",
@@ -36,14 +41,14 @@ namespace Viagens.Tests
                             Order = 2
                         }
                     }
-            },
-            PathFrom = new PathDTO()
-            {
-                LineId = "Line:1",
-                PathId = "Path:2",
-                IsEmpty = false,
-                Orientation = "From",
-                Segments = new List<SegmentDTO>(){
+                },
+                PathFrom = new PathDTO()
+                {
+                    LineId = "Line:1",
+                    PathId = "Path:2",
+                    IsEmpty = false,
+                    Orientation = "From",
+                    Segments = new List<SegmentDTO>(){
                         new SegmentDTO(){
                             StartNodeId = "Node:3",
                             EndNodeId="Node:2",
@@ -59,8 +64,9 @@ namespace Viagens.Tests
                             Order = 2
                         }
                     }
-            },
-        };
+                },
+            };
+        }
 
         [Test]
         public void expectSuccessIfEveythingValid()
@@ -73,6 +79,66 @@ namespace Viagens.Tests
             Assert.IsTrue(result.Value.Count == 4);
             Assert.IsTrue(result.Value[0].PassingTimes.Count == 3);
             Assert.IsTrue(result.Value[1].PassingTimes.Count == 3);
+        }
+
+        [Test]
+        public void expectFailurePathToNull()
+        {
+            sample.PathTo = null;
+
+            var task = _service.CreateTrips(sample);
+            task.Wait();
+            var result = task.Result;
+
+            Assert.IsFalse(result.IsSuccess);
+        }
+
+        [Test]
+        public void expectFailurePathFromNull()
+        {
+            sample.PathFrom = null;
+
+            var task = _service.CreateTrips(sample);
+            task.Wait();
+            var result = task.Result;
+
+            Assert.IsFalse(result.IsSuccess);
+        }
+
+        [Test]
+        public void expectFailureFrequencyLessThanOne()
+        {
+            sample.Frequency = 0;
+
+            var task = _service.CreateTrips(sample);
+            task.Wait();
+            var result = task.Result;
+
+            Assert.IsFalse(result.IsSuccess);
+        }
+
+        [Test]
+        public void expectFailureNumberOfTripsLessThanOne()
+        {
+            sample.NumberOfTrips = 0;
+
+            var task = _service.CreateTrips(sample);
+            task.Wait();
+            var result = task.Result;
+
+            Assert.IsFalse(result.IsSuccess);
+        }
+
+        [Test]
+        public void expectFailureStartTimeLessThanZero()
+        {
+            sample.StartTime = -1;
+
+            var task = _service.CreateTrips(sample);
+            task.Wait();
+            var result = task.Result;
+
+            Assert.IsFalse(result.IsSuccess);
         }
 
     }
