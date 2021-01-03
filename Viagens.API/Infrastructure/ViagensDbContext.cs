@@ -2,6 +2,8 @@ using Microsoft.EntityFrameworkCore;
 using lapr5_masterdata_viagens.Domain.Vehicles;
 using lapr5_masterdata_viagens.Domain.Drivers;
 using lapr5_masterdata_viagens.Domain.Trips;
+using lapr5_masterdata_viagens.Domain.VehicleDuties;
+using lapr5_masterdata_viagens.Domain.Workblocks;
 using System;
 using System.Collections.Generic;
 
@@ -20,6 +22,8 @@ namespace lapr5_masterdata_viagens.Infrastructure
 
         public DbSet<Trip> Trips { get; set; }
         public DbSet<PassingTime> PassingTimes { get; set; }
+        public DbSet<VehicleDuty> VehicleDuties { get; set; }
+        public DbSet<Workblock> Workblocks { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -30,6 +34,7 @@ namespace lapr5_masterdata_viagens.Infrastructure
             ConfigureVehicles(modelBuilder);
             ConfigureDrivers(modelBuilder);
             ConfigureTrips(modelBuilder);
+            ConfigureVehicleDuties(modelBuilder);
         }
 
         private void ConfigureVehicles(ModelBuilder modelBuilder)
@@ -113,6 +118,23 @@ namespace lapr5_masterdata_viagens.Infrastructure
             //Passing times mapping
             modelBuilder.Entity<Trip>()
                 .HasMany(t => t.PassingTimes)
+                .WithOne();
+        }
+
+        private void ConfigureVehicleDuties(ModelBuilder modelBuilder)
+        {
+            //ID
+            modelBuilder.Entity<VehicleDuty>()
+                .HasKey(vd => vd.Id);
+
+            //Trips mapping
+            modelBuilder.Entity<VehicleDuty>()
+                .HasMany(vd => vd.Trips)
+                .WithOne();
+
+            //Workblock mapping
+            modelBuilder.Entity<VehicleDuty>()
+                .HasMany(vd => vd.Workblocks)
                 .WithOne();
         }
     }
