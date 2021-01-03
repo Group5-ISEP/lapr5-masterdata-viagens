@@ -13,22 +13,16 @@ namespace lapr5_masterdata_viagens.Domain.Trips
         protected Object createFromString(String text)
         {
             if (text == null)
-                return Guid.NewGuid();
+                return Guid.NewGuid().ToString();
 
-            return new Guid(text);
+            return text;
         }
 
         override
         public String AsString()
         {
-            Guid obj = (Guid)base.ObjValue;
-            return obj.ToString();
+            return this.Value;
         }
 
-
-        public Guid AsGuid()
-        {
-            return (Guid)base.ObjValue;
-        }
     }
 }
