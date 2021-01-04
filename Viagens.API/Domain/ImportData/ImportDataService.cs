@@ -23,8 +23,8 @@ namespace lapr5_masterdata_viagens.Domain.ImportData
 
         public async Task<Result<List<string>>> ImportDataFromFile(string fileType, Stream fileStream)
         {
-           // AdapterCreator.CreateParser(fileType, fileStream);
-            fileStream.Close();
+            AdapterCreator.CreateParser(fileType, fileStream);
+
             var a = new List<string>() { "a" };
             return Result<List<string>>.Ok(a);
         }
