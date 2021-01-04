@@ -20,7 +20,9 @@ namespace lapr5_masterdata_viagens.Controllers
         [HttpPost]
         public async Task<ActionResult<List<string>>> Create(IFormFile file)
         {
-            var result = await _service.ImportDataFromFile(file);
+            var fileType = file.ContentType.Remove(0, 12); //remove 'application/' prefix
+
+            var result = await _service.ImportDataFromFile(fileType, file.OpenReadStream());
             if (result.IsSuccess == false)
             {
                 return Conflict(result.Error);
