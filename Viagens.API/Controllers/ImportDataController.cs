@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 using lapr5_masterdata_viagens.Domain.ImportData;
-using System.Collections.Generic;
 
 namespace lapr5_masterdata_viagens.Controllers
 {
@@ -18,7 +17,7 @@ namespace lapr5_masterdata_viagens.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<List<string>>> Create(IFormFile file)
+        public async Task<ActionResult<string>> Create(IFormFile file)
         {
             var fileType = file.ContentType.Remove(0, 12); //remove 'application/' prefix
 
