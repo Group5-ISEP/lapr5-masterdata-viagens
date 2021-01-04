@@ -20,5 +20,12 @@ namespace lapr5_masterdata_viagens.Domain.Trips
             this.TimeInstant = timeInstant;
             this.NodeID = nodeId;
         }
+
+        public PassingTime(string id, int timeInstant, string nodeId)
+        {
+            this.Id = new PassingTimeId(id);
+            this.TimeInstant = timeInstant;
+            this.NodeID = nodeId;
+        }
     }
 }

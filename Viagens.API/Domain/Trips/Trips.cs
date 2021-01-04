@@ -28,6 +28,16 @@ namespace lapr5_masterdata_viagens.Domain.Trips
             this.PassingTimes = passingTimes;
         }
 
+        private Trip(string id, string pathId, string lineId, string orientation, List<PassingTime> passingTimes)
+        {
+            this.Id = new TripId(id);
+            this.PathID = pathId;
+            this.LineID = lineId;
+            this.Orientation = orientation;
+            this.PassingTimes = passingTimes;
+        }
+
+
         public static Result<Trip> Create(int startTime, PathDTO pathDTO)
         {
 
@@ -59,5 +69,18 @@ namespace lapr5_masterdata_viagens.Domain.Trips
             Trip Trip = new Trip(PathId, LineId, Orientation, passingTimes);
             return Result<Trip>.Ok(Trip);
         }
+
+        public static Result<Trip> Create(string id, string pathId, string lineId, string orientation, List<PassingTime> passingTimes)
+        {
+
+            if (id == null || pathId == null || lineId == null)
+                return Result<Trip>.Fail("Trip ID parameters cant be null or empty.");
+            if (orientation == null || (orientation.Equals("From") == false && orientation.Equals("To") == false))
+                return Result<Trip>.Fail("Trip orientation must be To or From.");
+
+            Trip trip = new Trip(id, pathId, lineId, orientation, passingTimes);
+            return Result<Trip>.Ok(trip);
+        }
+
     }
 }
