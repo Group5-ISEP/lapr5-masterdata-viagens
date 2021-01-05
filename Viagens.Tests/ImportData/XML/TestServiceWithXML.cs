@@ -7,7 +7,7 @@ namespace Viagens.Tests
 {
     public class ImportDataTestWithXML
     {
-        private ImportDataService _service = new ImportDataService(new MockVehicleDutyRepo(), new MockTripRepo(), new MockUnitOfWork());
+        private ImportDataService _service = new ImportDataService(new MockVehicleDutyRepo(), new MockTripRepo(), new MockDriverDutyRepo(), new MockUnitOfWork());
 
         private string GetProjectDirectory()
         {
