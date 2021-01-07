@@ -73,8 +73,8 @@ namespace lapr5_masterdata_viagens.Domain.Trips
         public static Result<Trip> Create(string id, string pathId, string lineId, string orientation, List<PassingTime> passingTimes)
         {
 
-            if (id == null || pathId == null || lineId == null)
-                return Result<Trip>.Fail("Trip ID parameters cant be null or empty.");
+            if (id == null || pathId == null)
+                return Result<Trip>.Fail("Trip ID and Path ID parameters cant be null or empty.");
             if (orientation == null || (orientation.Equals("From") == false && orientation.Equals("To") == false))
                 return Result<Trip>.Fail("Trip orientation must be To or From.");
 
