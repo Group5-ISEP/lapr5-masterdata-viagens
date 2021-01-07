@@ -1,4 +1,5 @@
 using System.IO;
+using lapr5_masterdata_viagens.Domain.ImportData.XML;
 
 namespace lapr5_masterdata_viagens.Domain.ImportData
 {
