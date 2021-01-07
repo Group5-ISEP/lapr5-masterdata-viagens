@@ -33,6 +33,19 @@ namespace lapr5_masterdata_viagens.Domain.ImportData.XML
         [XmlArray]
         [XmlArrayItem(ElementName = "Trip")]
         public List<DocTrip> Trips { get; set; }
+
+        [XmlArray]
+        [XmlArrayItem(ElementName = "WorkBlock")]
+        public List<DocWorkBlock> WorkBlocks { get; set; }
+
+        [XmlArray]
+        [XmlArrayItem(ElementName = "VehicleDuty")]
+        public List<DocVehicleDuty> VehicleDuties { get; set; }
+
+        [XmlArray]
+        [XmlArrayItem(ElementName = "DriverDuty")]
+        public List<DocDriverDuty> DriverDuties { get; set; }
+
     }
 
     public class DocTrip
@@ -61,5 +74,57 @@ namespace lapr5_masterdata_viagens.Domain.ImportData.XML
 
         [XmlAttribute("Node")]
         public string Node { get; set; }
+    }
+
+    public class DocWorkBlock
+    {
+        [XmlAttribute("key")]
+        public string Key { get; set; }
+
+        [XmlAttribute("StartTime")]
+        public int StartTime { get; set; }
+        [XmlAttribute("EndTime")]
+        public int EndTime { get; set; }
+
+        [XmlAttribute("StartNode")]
+        public string StartNode { get; set; }
+        [XmlAttribute("EndNode")]
+        public string EndNode { get; set; }
+
+        [XmlArray]
+        [XmlArrayItem(ElementName = "ref")]
+        public List<Ref> Trips { get; set; }
+    }
+
+    public class DocVehicleDuty
+    {
+        [XmlAttribute("key")]
+        public string Key { get; set; }
+
+        [XmlAttribute("Name")]
+        public string Name { get; set; }
+
+        [XmlArray]
+        [XmlArrayItem(ElementName = "ref")]
+        public List<Ref> WorkBlocks { get; set; }
+    }
+
+    public class DocDriverDuty
+    {
+        [XmlAttribute("key")]
+        public string Key { get; set; }
+
+        [XmlAttribute("Name")]
+        public string Name { get; set; }
+
+        [XmlArray]
+        [XmlArrayItem(ElementName = "ref")]
+        public List<Ref> WorkBlocks { get; set; }
+    }
+
+    public class Ref
+    {
+        [XmlAttribute("key")]
+        public string Key { get; set; }
     }
 }
