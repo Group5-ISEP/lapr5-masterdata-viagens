@@ -4,6 +4,7 @@ using lapr5_masterdata_viagens.Domain.Drivers;
 using lapr5_masterdata_viagens.Domain.Trips;
 using lapr5_masterdata_viagens.Domain.VehicleDuties;
 using lapr5_masterdata_viagens.Domain.Workblocks;
+using lapr5_masterdata_viagens.Domain.DriverDuties;
 using System;
 using System.Collections.Generic;
 
@@ -24,6 +25,7 @@ namespace lapr5_masterdata_viagens.Infrastructure
         public DbSet<PassingTime> PassingTimes { get; set; }
         public DbSet<VehicleDuty> VehicleDuties { get; set; }
         public DbSet<Workblock> Workblocks { get; set; }
+        public DbSet<DriverDuty> DriverDuties { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -35,6 +37,7 @@ namespace lapr5_masterdata_viagens.Infrastructure
             ConfigureDrivers(modelBuilder);
             ConfigureTrips(modelBuilder);
             ConfigureVehicleDuties(modelBuilder);
+            ConfigureDriverDuties(modelBuilder);
         }
 
         private void ConfigureVehicles(ModelBuilder modelBuilder)
@@ -127,6 +130,11 @@ namespace lapr5_masterdata_viagens.Infrastructure
             modelBuilder.Entity<VehicleDuty>()
                 .HasKey(vd => vd.Id);
 
+            //Name
+            modelBuilder.Entity<VehicleDuty>()
+                .HasIndex(vd => vd.Name)
+                .IsUnique();
+
             //Trips mapping
             modelBuilder.Entity<VehicleDuty>()
                 .HasMany(vd => vd.Trips)
@@ -134,6 +142,23 @@ namespace lapr5_masterdata_viagens.Infrastructure
 
             //Workblock mapping
             modelBuilder.Entity<VehicleDuty>()
+                .HasMany(vd => vd.Workblocks)
+                .WithOne();
+        }
+
+        private void ConfigureDriverDuties(ModelBuilder modelBuilder)
+        {
+            //ID
+            modelBuilder.Entity<DriverDuty>()
+                .HasKey(vd => vd.Id);
+
+            //Name
+            modelBuilder.Entity<DriverDuty>()
+                .HasIndex(vd => vd.Name)
+                .IsUnique();
+
+            //Workblock mapping
+            modelBuilder.Entity<DriverDuty>()
                 .HasMany(vd => vd.Workblocks)
                 .WithOne();
         }

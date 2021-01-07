@@ -25,6 +25,8 @@ using lapr5_masterdata_viagens.Infrastructure.Trips;
 using lapr5_masterdata_viagens.Domain.VehicleDuties;
 using lapr5_masterdata_viagens.Infrastructure.VehicleDuties;
 using lapr5_masterdata_viagens.Domain.ImportData;
+using lapr5_masterdata_viagens.Domain.DriverDuties;
+using lapr5_masterdata_viagens.Infrastructure.DriverDuties;
 
 namespace lapr5_masterdata_viagens
 {
@@ -54,6 +56,7 @@ namespace lapr5_masterdata_viagens
             services.AddTransient<IVehicleDutyRepo, VehicleDutyRepo>();
             services.AddTransient<VehicleDutyService>();
             services.AddTransient<ImportDataService>();
+            services.AddTransient<IDriverDutyRepo, DriverDutyRepo>();
 
             services.AddControllers();
 
