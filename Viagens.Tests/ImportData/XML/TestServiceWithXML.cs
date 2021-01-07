@@ -27,6 +27,8 @@ namespace Viagens.Tests
             task.Wait();
             var result = task.Result;
 
+            fileStream.Close();
+
             Assert.IsTrue(result.IsSuccess);
         }
 
