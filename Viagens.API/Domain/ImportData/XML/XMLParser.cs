@@ -45,7 +45,6 @@ namespace lapr5_masterdata_viagens.Domain.ImportData.XML
             {
                 var docVehicleDuties = doc.World.GlDocument.GlDocumentSchedule.Schedule.VehicleDuties;
                 var docWorkBlocks = doc.World.GlDocument.GlDocumentSchedule.Schedule.WorkBlocks;
-                var docTrips = doc.World.GlDocument.GlDocumentSchedule.Schedule.Trips;
 
                 var vehicleDutyList = docVehicleDuties.ConvertAll<VehicleDuty>(docVd =>
                 {
@@ -71,6 +70,28 @@ namespace lapr5_masterdata_viagens.Domain.ImportData.XML
                 });
 
                 return Result<List<VehicleDuty>>.Ok(vehicleDutyList);
+            });
+        }
+
+        public Task<Result<List<DriverDuty>>> GetDriverDutiesAsync()
+        {
+            return new Task<Result<List<DriverDuty>>>(() =>
+            {
+                var docDriverDuties = doc.World.GlDocument.GlDocumentSchedule.Schedule.DriverDuties;
+                var docWorkBlocks = doc.World.GlDocument.GlDocumentSchedule.Schedule.WorkBlocks;
+
+                var driverDuties = docDriverDuties.ConvertAll<DriverDuty>(docDd =>
+                {
+                    List<Workblock> workblocks = docDd.WorkBlocks.ConvertAll<Workblock>(wbRef =>
+                    {
+                        DocWorkBlock docWorkBlock = docWorkBlocks.Find(doc => doc.Key == wbRef.Key);
+                        return ToWorkBlock(docWorkBlock);
+                    });
+
+                    return DriverDuty.Create(docDd.Name, workblocks, docDd.Key).Value;
+                });
+
+                return Result<List<DriverDuty>>.Ok(driverDuties);
             });
         }
 
@@ -100,14 +121,6 @@ namespace lapr5_masterdata_viagens.Domain.ImportData.XML
                 doctrip.Orientation = "From";
 
             return Trip.Create(doctrip.Key, doctrip.Path, doctrip.Line, doctrip.Orientation, passingTimes).Value;
-        }
-
-        public Task<Result<List<DriverDuty>>> GetDriverDutiesAsync()
-        {
-            return new Task<Result<List<DriverDuty>>>(() =>
-            {
-                return Result<List<DriverDuty>>.Ok(new List<DriverDuty>());
-            });
         }
     }
 }
