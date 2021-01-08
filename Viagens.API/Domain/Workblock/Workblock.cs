@@ -19,17 +19,17 @@ namespace lapr5_masterdata_viagens.Domain.Workblocks
         {
             //FOR ORM
         }
-        private Workblock(int starttime, int endtime, List<Trip> trips)
+        private Workblock(string id, int starttime, int endtime, List<Trip> trips)
         {
-            this.Id = new WorkblockId(Guid.NewGuid().ToString());
+            this.Id = new WorkblockId(id);
             this.StartTime = starttime;
             this.EndTime = endtime;
             this.Trips = trips;
         }
 
-        public static Result<Workblock> Create(int starttime, int endtime, List<Trip> trips)
+        public static Result<Workblock> Create(int starttime, int endtime, List<Trip> trips, string id = null)
         {
-            Workblock Workblock = new Workblock(starttime, endtime, trips);
+            Workblock Workblock = new Workblock(id, starttime, endtime, trips);
             return Result<Workblock>.Ok(Workblock);
         }
     }
