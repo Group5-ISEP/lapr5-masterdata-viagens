@@ -6,6 +6,7 @@ using lapr5_masterdata_viagens.Shared;
 using lapr5_masterdata_viagens.Domain.Trips;
 using lapr5_masterdata_viagens.Domain.VehicleDuties;
 using lapr5_masterdata_viagens.Domain.DriverDuties;
+using lapr5_masterdata_viagens.Domain.Workblocks;
 
 namespace lapr5_masterdata_viagens.Domain.ImportData.XML
 {
@@ -21,36 +22,92 @@ namespace lapr5_masterdata_viagens.Domain.ImportData.XML
             this.doc = (Document)serializer.Deserialize(fileStream);
         }
 
-        public async Task<Result<List<Trip>>> GetTripsAsync()
+        public Task<Result<List<Trip>>> GetTripsAsync()
         {
-            var docTripsList = doc.World.GlDocument.GlDocumentSchedule.Schedule.Trips;
-
-            var list = new List<Trip>();
-            foreach (var doctrip in docTripsList)
+            return new Task<Result<List<Trip>>>(() =>
             {
-                var passingTimes = doctrip.PassingTimes.ConvertAll<PassingTime>(pt => new PassingTime(pt.Key, pt.Time, pt.Node));
+                var docTripsList = doc.World.GlDocument.GlDocumentSchedule.Schedule.Trips;
 
-                if (doctrip.Orientation == "Go")
-                    doctrip.Orientation = "To";
-                if (doctrip.Orientation == "Return")
-                    doctrip.Orientation = "From";
+                var list = new List<Trip>();
+                foreach (var doctrip in docTripsList)
+                {
+                    var trip = ToTrip(doctrip);
+                    list.Add(trip);
+                }
+                return Result<List<Trip>>.Ok(list);
+            });
 
-                var result = Trip.Create(doctrip.Key, doctrip.Path, doctrip.Line, doctrip.Orientation, passingTimes);
-                if (result.IsSuccess)
-                    list.Add(result.Value);
-            }
-            return Result<List<Trip>>.Ok(list);
         }
 
-        public async Task<Result<List<VehicleDuty>>> GetVehicleDutiesAsync()
+        public Task<Result<List<VehicleDuty>>> GetVehicleDutiesAsync()
         {
+            return new Task<Result<List<VehicleDuty>>>(() =>
+            {
+                var docVehicleDuties = doc.World.GlDocument.GlDocumentSchedule.Schedule.VehicleDuties;
+                var docWorkBlocks = doc.World.GlDocument.GlDocumentSchedule.Schedule.WorkBlocks;
+                var docTrips = doc.World.GlDocument.GlDocumentSchedule.Schedule.Trips;
 
-            return Result<List<VehicleDuty>>.Ok(new List<VehicleDuty>());
+                var vehicleDutyList = docVehicleDuties.ConvertAll<VehicleDuty>(docVd =>
+                {
+                    List<Workblock> workblocks = docVd.WorkBlocks.ConvertAll<Workblock>(wbRef =>
+                    {
+                        DocWorkBlock docWorkBlock = docWorkBlocks.Find(doc => doc.Key == wbRef.Key);
+                        return ToWorkBlock(docWorkBlock);
+                    });
+
+                    var vehicleDutyTrips = new List<Trip>();
+                    foreach (var wb in workblocks)
+                    {
+                        foreach (var trip in wb.Trips)
+                        {
+                            if (vehicleDutyTrips.Contains(trip) == false)
+                                vehicleDutyTrips.Add(trip);
+                        }
+                    }
+
+                    VehicleDuty vehicleDuty = VehicleDuty.Create(docVd.Name, vehicleDutyTrips, docVd.Key).Value;
+                    vehicleDuty.AddWorkBlocks(workblocks);
+                    return vehicleDuty;
+                });
+
+                return Result<List<VehicleDuty>>.Ok(vehicleDutyList);
+            });
         }
 
-        public async Task<Result<List<DriverDuty>>> GetDriverDutiesAsync()
+        private Workblock ToWorkBlock(DocWorkBlock docWorkBlock)
         {
-            return Result<List<DriverDuty>>.Ok(new List<DriverDuty>());
+            var docTrips = doc.World.GlDocument.GlDocumentSchedule.Schedule.Trips;
+
+            var id = docWorkBlock.Key;
+            var startTime = docWorkBlock.StartTime;
+            var endTime = docWorkBlock.EndTime;
+
+            var workblockTrips = docWorkBlock.Trips.ConvertAll<Trip>(tripRef =>
+                {
+                    var docTrip = docTrips.Find(t => t.Key == tripRef.Key);
+                    return ToTrip(docTrip);
+                });
+            return Workblock.Create(startTime, endTime, workblockTrips, id).Value;
+        }
+
+        private Trip ToTrip(DocTrip doctrip)
+        {
+            var passingTimes = doctrip.PassingTimes.ConvertAll<PassingTime>(pt => new PassingTime(pt.Key, pt.Time, pt.Node));
+
+            if (doctrip.Orientation == "Go")
+                doctrip.Orientation = "To";
+            if (doctrip.Orientation == "Return")
+                doctrip.Orientation = "From";
+
+            return Trip.Create(doctrip.Key, doctrip.Path, doctrip.Line, doctrip.Orientation, passingTimes).Value;
+        }
+
+        public Task<Result<List<DriverDuty>>> GetDriverDutiesAsync()
+        {
+            return new Task<Result<List<DriverDuty>>>(() =>
+            {
+                return Result<List<DriverDuty>>.Ok(new List<DriverDuty>());
+            });
         }
     }
 }

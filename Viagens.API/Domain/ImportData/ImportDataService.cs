@@ -27,9 +27,13 @@ namespace lapr5_masterdata_viagens.Domain.ImportData
         public async Task<Result<string>> ImportDataFromFile(string fileType, Stream fileStream)
         {
             var parser = AdapterCreator.CreateParser(fileType, fileStream);
+
             var tripsTask = parser.GetTripsAsync();
             var vehicleDutyTask = parser.GetVehicleDutiesAsync();
             var driverDutyTask = parser.GetDriverDutiesAsync();
+            tripsTask.Start();
+            vehicleDutyTask.Start();
+            driverDutyTask.Start();
 
             var tripsResult = await tripsTask;
             var vehicledutyResult = await vehicleDutyTask;
