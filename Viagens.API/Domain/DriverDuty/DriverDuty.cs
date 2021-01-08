@@ -26,7 +26,7 @@ namespace lapr5_masterdata_viagens.Domain.DriverDuties
             this.Workblocks = workblocks;
         }
 
-        public static Result<DriverDuty> Create(string id, string name, List<Workblock> workblocks)
+        public static Result<DriverDuty> Create(string name, List<Workblock> workblocks, string id = null)
         {
             DriverDuty DriverDuty = new DriverDuty(id, name, workblocks);
             return Result<DriverDuty>.Ok(DriverDuty);
