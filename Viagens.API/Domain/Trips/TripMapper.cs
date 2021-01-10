@@ -10,13 +10,14 @@ namespace lapr5_masterdata_viagens.Domain.Trips
             dto.Id = trip.Id.AsString();
             dto.LineID = trip.LineID;
             dto.Orientation = trip.Orientation;
-            dto.PathID = trip.PathID; 
-            
-            var list = new List<TripDTO.PassingTimeDTO>();
+            dto.PathID = trip.PathID;
+
+            var list = new List<PassingTimeDTO>();
             foreach (var passingtime in trip.PassingTimes)
             {
-                var passingTimeDTO = new TripDTO.PassingTimeDTO()
+                var passingTimeDTO = new PassingTimeDTO()
                 {
+                    Id = passingtime.Id.AsString(),
                     NodeID = passingtime.NodeID,
                     TimeInstant = passingtime.TimeInstant
                 };

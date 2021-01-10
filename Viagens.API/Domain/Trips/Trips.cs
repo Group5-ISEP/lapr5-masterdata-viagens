@@ -1,8 +1,6 @@
-using System;
 using lapr5_masterdata_viagens.Shared;
-using System.Globalization;
-using System.Text.RegularExpressions;
 using lapr5_masterdata_viagens.Domain.Shared;
+using lapr5_masterdata_viagens.Domain.Path;
 using System.Collections.Generic;
 
 namespace lapr5_masterdata_viagens.Domain.Trips
@@ -19,16 +17,7 @@ namespace lapr5_masterdata_viagens.Domain.Trips
         {
             //FOR ORM
         }
-        private Trip(string pathId, string lineId, string orientation, List<PassingTime> passingTimes)
-        {
-            this.Id = new TripId(Guid.NewGuid().ToString());
-            this.PathID = pathId;
-            this.LineID = lineId;
-            this.Orientation = orientation;
-            this.PassingTimes = passingTimes;
-        }
-
-        private Trip(string id, string pathId, string lineId, string orientation, List<PassingTime> passingTimes)
+        private Trip(string pathId, string lineId, string orientation, List<PassingTime> passingTimes, string id = null)
         {
             this.Id = new TripId(id);
             this.PathID = pathId;
@@ -37,24 +26,42 @@ namespace lapr5_masterdata_viagens.Domain.Trips
             this.PassingTimes = passingTimes;
         }
 
-
-        public static Result<Trip> Create(int startTime, PathDTO pathDTO)
+        public static Result<Trip> Create(int startTime, PathDTO pathDTO, TripDTO tripDTO = null)
         {
-
-            if (startTime < 0)
-                return Result<Trip>.Fail("Trip start time must be equal or greater than 0");
             if (pathDTO == null)
                 return Result<Trip>.Fail("Path cant be null");
-
 
             var PathId = pathDTO.PathId;
             var LineId = pathDTO.LineId;
             var Orientation = pathDTO.Orientation;
+
+            var passingTimesResult = GeneratePassingTimes(startTime, pathDTO);
+            if (passingTimesResult.IsSuccess == false)
+                return Result<Trip>.Fail(passingTimesResult.Error);
+
+            var passingTimes = passingTimesResult.Value;
+
+            if (tripDTO != null)
+            {
+                if (CheckValid(tripDTO, pathDTO, passingTimes) == false)
+                    return Result<Trip>.Fail("Trip dto doesnt match the path dto and passing times generated");
+
+                return Result<Trip>.Ok(new Trip(PathId, LineId, Orientation, passingTimes, tripDTO.Id));
+            }
+
+            return Result<Trip>.Ok(new Trip(PathId, LineId, Orientation, passingTimes));
+        }
+
+        private static Result<List<PassingTime>> GeneratePassingTimes(int startTime, PathDTO pathDTO)
+        {
             var passingTimes = new List<PassingTime>();
 
             //passing time in start node
             var firstNode = pathDTO.Segments[0].StartNodeId;
-            passingTimes.Add(new PassingTime(startTime, firstNode));
+            var passingTimeResult = PassingTime.Create(startTime, firstNode);
+            if (passingTimeResult.IsSuccess == false)
+                return Result<List<PassingTime>>.Fail(passingTimeResult.Error);
+            passingTimes.Add(passingTimeResult.Value);
 
             //generate the other passing times
             var segments = pathDTO.Segments;
@@ -63,23 +70,34 @@ namespace lapr5_masterdata_viagens.Domain.Trips
             {
                 var segment = segments.Find(seg => seg.Order == position);
                 timeInstant += segment.Duration;
-                passingTimes.Add(new PassingTime(timeInstant, segment.EndNodeId));
+                passingTimeResult = PassingTime.Create(timeInstant, segment.EndNodeId);
+                if (passingTimeResult.IsSuccess == false)
+                    return Result<List<PassingTime>>.Fail(passingTimeResult.Error);
+                passingTimes.Add(passingTimeResult.Value);
             }
 
-            Trip Trip = new Trip(PathId, LineId, Orientation, passingTimes);
-            return Result<Trip>.Ok(Trip);
+            return Result<List<PassingTime>>.Ok(passingTimes);
         }
 
-        public static Result<Trip> Create(string id, string pathId, string lineId, string orientation, List<PassingTime> passingTimes)
+        private static bool CheckValid(TripDTO tripDTO, PathDTO pathDTO, List<PassingTime> passingTimes)
         {
 
-            if (id == null || pathId == null)
-                return Result<Trip>.Fail("Trip ID and Path ID parameters cant be null or empty.");
-            if (orientation == null || (orientation.Equals("From") == false && orientation.Equals("To") == false))
-                return Result<Trip>.Fail("Trip orientation must be To or From.");
+            if (tripDTO.PathID != pathDTO.PathId)
+                return false;
+            if (tripDTO.LineID != pathDTO.LineId)
+                return false;
+            if (tripDTO.Orientation != pathDTO.Orientation)
+                return false;
+            foreach (var passingTimeDto in tripDTO.PassingTimes)
+            {
+                var passingTime = passingTimes.Find(pt => pt.NodeID == passingTimeDto.NodeID
+                                                        && pt.TimeInstant == passingTimeDto.TimeInstant);
 
-            Trip trip = new Trip(id, pathId, lineId, orientation, passingTimes);
-            return Result<Trip>.Ok(trip);
+                if (passingTime == null)
+                    return false;
+            }
+
+            return true;
         }
 
     }
