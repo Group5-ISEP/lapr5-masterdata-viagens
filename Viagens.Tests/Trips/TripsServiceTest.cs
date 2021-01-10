@@ -1,13 +1,10 @@
 using NUnit.Framework;
 using lapr5_masterdata_viagens.Domain.Trips;
-using System.Threading.Tasks;
-using System.Collections.Generic;
-
 namespace Viagens.Tests
 {
     public class TripServiceTests
     {
-        private TripService _service = new TripService(new MockTripRepo(), new MockUnitOfWork());
+        private TripService _service;
 
         CreateTripsDTO sample;
 
@@ -19,53 +16,12 @@ namespace Viagens.Tests
                 Frequency = 300,
                 NumberOfTrips = 2,
                 StartTime = 0,
-                PathTo = new PathDTO()
-                {
-                    LineId = "Line:1",
-                    PathId = "Path:1",
-                    IsEmpty = false,
-                    Orientation = "To",
-                    Segments = new List<SegmentDTO>(){
-                        new SegmentDTO(){
-                            StartNodeId = "Node:1",
-                            EndNodeId="Node:2",
-                            Distance =2000,
-                            Duration = 500,
-                            Order = 1
-                        },
-                        new SegmentDTO(){
-                            StartNodeId = "Node:2",
-                            EndNodeId="Node:3",
-                            Distance =1500,
-                            Duration = 500,
-                            Order = 2
-                        }
-                    }
-                },
-                PathFrom = new PathDTO()
-                {
-                    LineId = "Line:1",
-                    PathId = "Path:2",
-                    IsEmpty = false,
-                    Orientation = "From",
-                    Segments = new List<SegmentDTO>(){
-                        new SegmentDTO(){
-                            StartNodeId = "Node:3",
-                            EndNodeId="Node:2",
-                            Distance =1500,
-                            Duration = 500,
-                            Order = 1
-                        },
-                        new SegmentDTO(){
-                            StartNodeId = "Node:2",
-                            EndNodeId="Node:1",
-                            Distance =2000,
-                            Duration = 500,
-                            Order = 2
-                        }
-                    }
-                },
+                Line = "Line:1",
+                PathTo = "Path:1",
+                PathFrom = "Path:2",
             };
+
+            _service = new TripService(new MockTripRepo(), new MockUnitOfWork(), new MockMDRHttpClient());
         }
 
         [Test]
@@ -91,6 +47,7 @@ namespace Viagens.Tests
             var result = task.Result;
 
             Assert.IsFalse(result.IsSuccess);
+            Assert.AreEqual("Path id cant be null", result.Error);
         }
 
         [Test]
@@ -103,6 +60,20 @@ namespace Viagens.Tests
             var result = task.Result;
 
             Assert.IsFalse(result.IsSuccess);
+            Assert.AreEqual("Path id cant be null", result.Error);
+        }
+
+        [Test]
+        public void expectFailureLineNull()
+        {
+            sample.Line = null;
+
+            var task = _service.CreateTrips(sample);
+            task.Wait();
+            var result = task.Result;
+
+            Assert.IsFalse(result.IsSuccess);
+            Assert.AreEqual("Line id cant be null", result.Error);
         }
 
         [Test]
@@ -115,6 +86,7 @@ namespace Viagens.Tests
             var result = task.Result;
 
             Assert.IsFalse(result.IsSuccess);
+            Assert.AreEqual("Frequency cant be less than one", result.Error);
         }
 
         [Test]
@@ -127,6 +99,7 @@ namespace Viagens.Tests
             var result = task.Result;
 
             Assert.IsFalse(result.IsSuccess);
+            Assert.AreEqual("Number of trips cant be less than one", result.Error);
         }
 
         [Test]
@@ -139,6 +112,20 @@ namespace Viagens.Tests
             var result = task.Result;
 
             Assert.IsFalse(result.IsSuccess);
+            Assert.AreEqual("Start time cant be less than zero", result.Error);
+        }
+
+        [Test]
+        public void expectFailureIfTripDoesntFitInto0to24HourPeriod()
+        {
+            sample.StartTime = 86400;
+
+            var task = _service.CreateTrips(sample);
+            task.Wait();
+            var result = task.Result;
+
+            Assert.IsFalse(result.IsSuccess);
+            Assert.AreEqual("Time exceeds 24 hour period", result.Error);
         }
 
     }

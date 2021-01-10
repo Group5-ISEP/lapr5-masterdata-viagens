@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 
-namespace lapr5_masterdata_viagens.Domain.Trips
+namespace lapr5_masterdata_viagens.Domain.Path
 {
+
     public class PathDTO
     {
 

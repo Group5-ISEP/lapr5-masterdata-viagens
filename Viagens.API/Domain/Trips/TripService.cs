@@ -1,7 +1,8 @@
 using System.Threading.Tasks;
+using System.Collections.Generic;
 using lapr5_masterdata_viagens.Shared;
 using lapr5_masterdata_viagens.Domain.Shared;
-using System.Collections.Generic;
+using lapr5_masterdata_viagens.Infrastructure.MDRHttpClient;
 
 namespace lapr5_masterdata_viagens.Domain.Trips
 {
@@ -10,10 +11,13 @@ namespace lapr5_masterdata_viagens.Domain.Trips
         private readonly ITripRepo _repo;
         private readonly IUnitOfWork _unitOfWork;
 
-        public TripService(ITripRepo repo, IUnitOfWork unitOfWork)
+        private readonly MDRHttpClientInterface _client;
+
+        public TripService(ITripRepo repo, IUnitOfWork unitOfWork, MDRHttpClientInterface client)
         {
             this._unitOfWork = unitOfWork;
             this._repo = repo;
+            this._client = client;
         }
 
 
@@ -53,7 +57,7 @@ namespace lapr5_masterdata_viagens.Domain.Trips
         private Result<List<Trip>> GenerateTrips(CreateTripsDTO dto)
         {
 
-            if (dto.Frequency < 1)
+           /*  if (dto.Frequency < 1)
                 return Result<List<Trip>>.Fail("Frequency must be more than 0");
 
             if (dto.NumberOfTrips < 1)
@@ -92,7 +96,9 @@ namespace lapr5_masterdata_viagens.Domain.Trips
                 TripList.Add(result.Value);
             }
 
-            return Result<List<Trip>>.Ok(TripList);
+            return Result<List<Trip>>.Ok(TripList); */
+
+            return Result<List<Trip>>.Ok(new List<Trip>());
         }
     }
 }
