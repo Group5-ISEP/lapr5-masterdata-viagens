@@ -128,6 +128,19 @@ namespace Viagens.Tests
             Assert.AreEqual("Time instant cant be more than 86400 (24 hours)", result.Error);
         }
 
+        [Test]
+        public void expectFailureIfPathsNotFoundInFetchedPaths()
+        {
+            sample.Line = "Line:2";
+
+            var task = _service.CreateTrips(sample);
+            task.Wait();
+            var result = task.Result;
+
+            Assert.IsFalse(result.IsSuccess);
+            Assert.AreEqual("Path not found", result.Error);
+        }
+
     }
 
 }
