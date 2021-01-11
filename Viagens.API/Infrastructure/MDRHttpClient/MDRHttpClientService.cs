@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using lapr5_masterdata_viagens.Domain.Path;
 using lapr5_masterdata_viagens.Shared;
+using System.Text.Json;
 
 namespace lapr5_masterdata_viagens.Infrastructure.MDRHttpClient
 {
@@ -20,8 +21,17 @@ namespace lapr5_masterdata_viagens.Infrastructure.MDRHttpClient
 
         public async Task<Result<List<PathDTO>>> FetchPathsByLine(string line)
         {
-            // TODO: implement fetch
-            return Result<List<PathDTO>>.Fail(" fetch Not implemented");
+            var response = await Client.GetAsync(
+            "api/path/" + line);
+
+            response.EnsureSuccessStatusCode();
+
+            using var responseStream = await response.Content.ReadAsStreamAsync();
+
+            var result = await JsonSerializer.DeserializeAsync
+                <List<PathDTO>>(responseStream);
+
+            return Result<List<PathDTO>>.Ok(result);
         }
     }
 }

@@ -50,6 +50,8 @@ namespace lapr5_masterdata_viagens.Domain.Trips
             var pathDtoList = fetchResult.Value;
             var pathDtoTo = pathDtoList.Find(pathDto => pathDto.PathId == dto.PathTo);
             var pathDtoFrom = pathDtoList.Find(pathDto => pathDto.PathId == dto.PathFrom);
+            if (pathDtoTo == null || pathDtoFrom == null)
+                return Result<List<TripDTO>>.Fail("Path not found");
 
 
             var result = GenerateTrips(dto, pathDtoTo, pathDtoFrom);
