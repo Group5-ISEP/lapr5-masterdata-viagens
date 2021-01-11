@@ -27,6 +27,7 @@ using lapr5_masterdata_viagens.Infrastructure.VehicleDuties;
 using lapr5_masterdata_viagens.Domain.ImportData;
 using lapr5_masterdata_viagens.Domain.DriverDuties;
 using lapr5_masterdata_viagens.Infrastructure.DriverDuties;
+using lapr5_masterdata_viagens.Infrastructure.MDRHttpClient;
 
 namespace lapr5_masterdata_viagens
 {
@@ -57,6 +58,8 @@ namespace lapr5_masterdata_viagens
             services.AddTransient<VehicleDutyService>();
             services.AddTransient<ImportDataService>();
             services.AddTransient<IDriverDutyRepo, DriverDutyRepo>();
+
+            services.AddHttpClient<MDRHttpClientInterface, MDRHttpClientService>();
 
             services.AddControllers();
 

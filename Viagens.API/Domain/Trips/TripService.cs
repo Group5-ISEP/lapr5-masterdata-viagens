@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using lapr5_masterdata_viagens.Shared;
 using lapr5_masterdata_viagens.Domain.Shared;
+using lapr5_masterdata_viagens.Domain.Path;
 using lapr5_masterdata_viagens.Infrastructure.MDRHttpClient;
 
 namespace lapr5_masterdata_viagens.Domain.Trips
@@ -37,31 +38,45 @@ namespace lapr5_masterdata_viagens.Domain.Trips
 
         public async Task<Result<List<TripDTO>>> CreateTrips(CreateTripsDTO dto)
         {
-            var result = GenerateTrips(dto);
+            if (dto.PathTo == null || dto.PathFrom == null)
+                return Result<List<TripDTO>>.Fail("Path id cant be null");
+            if (dto.Line == null)
+                return Result<List<TripDTO>>.Fail("Line id cant be null");
+
+            var fetchResult = await this._client.FetchPathsByLine(dto.Line);
+            if (fetchResult.IsSuccess == false)
+                return Result<List<TripDTO>>.Fail(fetchResult.Error);
+
+            var pathDtoList = fetchResult.Value;
+            var pathDtoTo = pathDtoList.Find(pathDto => pathDto.PathId == dto.PathTo);
+            var pathDtoFrom = pathDtoList.Find(pathDto => pathDto.PathId == dto.PathFrom);
+
+
+            var result = GenerateTrips(dto, pathDtoTo, pathDtoFrom);
             if (result.IsSuccess == false)
                 return Result<List<TripDTO>>.Fail(result.Error);
 
-            List<TripDTO> SavedTrips = new List<TripDTO>();
+            List<TripDTO> savedTrips = new List<TripDTO>();
 
             foreach (var trip in result.Value)
             {
-                Trip TripSaved = await _repo.AddAsync(trip);
-                SavedTrips.Add(TripMapper.ToDto(TripSaved));
+                Trip tripSaved = await _repo.AddAsync(trip);
+                savedTrips.Add(TripMapper.ToDto(tripSaved));
             }
 
             await _unitOfWork.CommitAsync();
 
-            return Result<List<TripDTO>>.Ok(SavedTrips);
+            return Result<List<TripDTO>>.Ok(savedTrips);
         }
 
-        private Result<List<Trip>> GenerateTrips(CreateTripsDTO dto)
+        private Result<List<Trip>> GenerateTrips(CreateTripsDTO dto, PathDTO pathTo, PathDTO pathFrom)
         {
 
-           /*  if (dto.Frequency < 1)
-                return Result<List<Trip>>.Fail("Frequency must be more than 0");
+            if (dto.Frequency < 1)
+                return Result<List<Trip>>.Fail("Frequency cant be less than one");
 
             if (dto.NumberOfTrips < 1)
-                return Result<List<Trip>>.Fail("Number of trips must be more than 0");
+                return Result<List<Trip>>.Fail("Number of trips cant be less than one");
 
             var TripList = new List<Trip>();
 
@@ -70,7 +85,7 @@ namespace lapr5_masterdata_viagens.Domain.Trips
             {
                 var startTime = dto.StartTime + (tripnumber * dto.Frequency);
 
-                var result = Trip.Create(startTime, dto.PathTo);
+                var result = Trip.Create(startTime, pathTo);
                 if (result.IsSuccess == false)
                     return Result<List<Trip>>.Fail(result.Error);
 
@@ -79,7 +94,7 @@ namespace lapr5_masterdata_viagens.Domain.Trips
 
             //start time of the first From path trip
             var startTimeFromPath = dto.StartTime;
-            foreach (var segment in dto.PathTo.Segments)
+            foreach (var segment in pathTo.Segments)
             {
                 startTimeFromPath += segment.Duration;
             }
@@ -89,16 +104,14 @@ namespace lapr5_masterdata_viagens.Domain.Trips
             {
                 var startTime = startTimeFromPath + (tripnumber * dto.Frequency);
 
-                var result = Trip.Create(startTime, dto.PathFrom);
+                var result = Trip.Create(startTime, pathFrom);
                 if (result.IsSuccess == false)
                     return Result<List<Trip>>.Fail(result.Error);
 
                 TripList.Add(result.Value);
             }
 
-            return Result<List<Trip>>.Ok(TripList); */
-
-            return Result<List<Trip>>.Ok(new List<Trip>());
+            return Result<List<Trip>>.Ok(TripList);
         }
     }
 }

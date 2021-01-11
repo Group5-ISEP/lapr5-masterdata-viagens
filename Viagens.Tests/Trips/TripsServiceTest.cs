@@ -112,7 +112,7 @@ namespace Viagens.Tests
             var result = task.Result;
 
             Assert.IsFalse(result.IsSuccess);
-            Assert.AreEqual("Start time cant be less than zero", result.Error);
+            Assert.AreEqual("Time instant cant be less than zero", result.Error);
         }
 
         [Test]
@@ -125,7 +125,7 @@ namespace Viagens.Tests
             var result = task.Result;
 
             Assert.IsFalse(result.IsSuccess);
-            Assert.AreEqual("Time exceeds 24 hour period", result.Error);
+            Assert.AreEqual("Time instant cant be more than 86400 (24 hours)", result.Error);
         }
 
     }
