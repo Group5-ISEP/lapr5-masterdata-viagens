@@ -20,7 +20,7 @@ namespace lapr5_masterdata_viagens.Domain.VehicleDuties
         {
             //FOR ORM
         }
-        private VehicleDuty(string id, string name, List<Trip> trips)
+        private VehicleDuty(string name, List<Trip> trips, string id = null)
         {
             this.Id = new VehicleDutyId(id);
             this.Name = name;
@@ -30,7 +30,18 @@ namespace lapr5_masterdata_viagens.Domain.VehicleDuties
 
         public static Result<VehicleDuty> Create(string name, List<Trip> trips, string id = null)
         {
-            VehicleDuty VehicleDuty = new VehicleDuty(id, name, trips);
+            if (name == null)
+                return Result<VehicleDuty>.Fail("Vehicle duty name cant be null");
+            if (name.Length == 0)
+                return Result<VehicleDuty>.Fail("Vehicle duty name cant be empty");
+            if (trips == null)
+                return Result<VehicleDuty>.Fail("Trips list cant be null");
+            if (trips.Count == 0)
+                return Result<VehicleDuty>.Fail("Trips list cant be empty");
+            if (id != null && id.Length == 0)
+                return Result<VehicleDuty>.Fail("Vehicle duty id cant be empty");
+
+            VehicleDuty VehicleDuty = new VehicleDuty(name, trips, id);
             return Result<VehicleDuty>.Ok(VehicleDuty);
         }
 
