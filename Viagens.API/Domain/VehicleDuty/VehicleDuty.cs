@@ -25,7 +25,7 @@ namespace lapr5_masterdata_viagens.Domain.VehicleDuties
             this.Id = new VehicleDutyId(id);
             this.Name = name;
             this.Trips = trips;
-            this.Workblocks = new List<Workblock>();
+            this.Workblocks = null;
         }
 
         public static Result<VehicleDuty> Create(string name, List<Trip> trips, string id = null)

@@ -21,6 +21,8 @@ namespace lapr5_masterdata_viagens.Domain.VehicleDuties
 
         public async Task<Result<VehicleDutyDTO>> CreateVehicleDuty(VehicleDutyDTO dto)
         {
+            if (dto.Trips == null)
+                return Result<VehicleDutyDTO>.Fail("Trips list cant be null");
             List<TripId> ids = dto.Trips.ConvertAll<TripId>(id => new TripId(id));
             List<Trip> trips = await _tripsrepo.GetByIdsAsync(ids);
             var result = VehicleDuty.Create(dto.Name, trips);
