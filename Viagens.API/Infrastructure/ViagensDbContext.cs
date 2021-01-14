@@ -130,6 +130,13 @@ namespace lapr5_masterdata_viagens.Infrastructure
             //ID
             modelBuilder.Entity<Workblock>()
                 .HasKey(wb => wb.Id);
+
+            modelBuilder.Entity<Workblock>()
+            .Property(wb => wb.TripsIDs)
+            .HasConversion(
+                v => string.Join(',', v),
+                v => new List<string>(v.Split(',', StringSplitOptions.RemoveEmptyEntries))
+            );
         }
 
         private void ConfigureVehicleDuties(ModelBuilder modelBuilder)
