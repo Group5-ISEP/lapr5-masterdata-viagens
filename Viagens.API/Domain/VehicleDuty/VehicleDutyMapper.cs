@@ -10,7 +10,8 @@ namespace lapr5_masterdata_viagens.Domain.VehicleDuties
             dto.Id = vehicleDuty.Id.AsString();
             dto.Name = vehicleDuty.Name;
             dto.Trips = vehicleDuty.Trips.ConvertAll<string>(trip => trip.Id.AsString());
-            dto.Workblocks = vehicleDuty.Workblocks.ConvertAll<string>(wb => wb.Id.AsString());
+            if (dto.Workblocks != null)
+                dto.Workblocks = vehicleDuty.Workblocks.ConvertAll<string>(wb => wb.Id.AsString());
             return dto;
         }
     }
