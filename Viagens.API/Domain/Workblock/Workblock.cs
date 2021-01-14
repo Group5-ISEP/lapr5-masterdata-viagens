@@ -12,21 +12,21 @@ namespace lapr5_masterdata_viagens.Domain.Workblocks
     {
         public int StartTime { get; private set; }
         public int EndTime { get; private set; }
-        public List<TripId> TripsIDs { get; private set; }
+        public List<string> TripsIDs { get; private set; }
 
 
         private Workblock()
         {
             //FOR ORM
         }
-        private Workblock(int starttime, int endtime, List<TripId> trips, string id = null)
+        private Workblock(int starttime, int endtime, List<string> trips, string id = null)
         {
             this.Id = new WorkblockId(id);
             this.StartTime = starttime;
             this.EndTime = endtime;
             this.TripsIDs = trips;
         }
-        public static Result<Workblock> Create(int starttime, int endtime, List<TripId> trips, string id = null)
+        public static Result<Workblock> Create(int starttime, int endtime, List<string> trips, string id = null)
         {
             if (starttime < 0)
                 return Result<Workblock>.Fail("Workblock start time cant be less than zero");

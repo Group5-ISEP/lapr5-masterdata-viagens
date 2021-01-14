@@ -7,13 +7,13 @@ namespace Viagens.Tests
 {
     public class WorkblockCreationTest
     {
-        List<TripId> tripIds;
+        List<string> tripIds;
 
         [SetUp]
         public void Setup()
         {
-            tripIds = new List<TripId>();
-            var tripid = new TripId("Trip:1");
+            tripIds = new List<string>();
+            var tripid = "Trip:1";
             tripIds.Add(tripid);
         }
 
@@ -56,7 +56,7 @@ namespace Viagens.Tests
         [Test]
         public void expectSuccessIfEvrythingValid()
         {
-            var result = Workblock.Create(100, 500, tripIds,"WorkBlock:1");
+            var result = Workblock.Create(100, 500, tripIds, "WorkBlock:1");
 
             Assert.IsTrue(result.IsSuccess);
         }
