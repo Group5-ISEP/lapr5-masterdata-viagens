@@ -36,6 +36,7 @@ namespace lapr5_masterdata_viagens.Infrastructure
             ConfigureVehicles(modelBuilder);
             ConfigureDrivers(modelBuilder);
             ConfigureTrips(modelBuilder);
+            ConfigureWorkBlocks(modelBuilder);
             ConfigureVehicleDuties(modelBuilder);
             ConfigureDriverDuties(modelBuilder);
         }
@@ -122,6 +123,13 @@ namespace lapr5_masterdata_viagens.Infrastructure
             modelBuilder.Entity<Trip>()
                 .HasMany(t => t.PassingTimes)
                 .WithOne();
+        }
+
+        private void ConfigureWorkBlocks(ModelBuilder modelBuilder)
+        {
+            //ID
+            modelBuilder.Entity<Workblock>()
+                .HasKey(wb => wb.Id);
         }
 
         private void ConfigureVehicleDuties(ModelBuilder modelBuilder)
