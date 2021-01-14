@@ -57,10 +57,9 @@ namespace lapr5_masterdata_viagens.Domain.ImportData.XML
                     var vehicleDutyTrips = new List<Trip>();
                     foreach (var wb in workblocks)
                     {
-                        foreach (var trip in wb.Trips)
+                        foreach (var trip in wb.TripsIDs)
                         {
-                            if (vehicleDutyTrips.Contains(trip) == false)
-                                vehicleDutyTrips.Add(trip);
+
                         }
                     }
 
@@ -108,19 +107,18 @@ namespace lapr5_masterdata_viagens.Domain.ImportData.XML
                     var docTrip = docTrips.Find(t => t.Key == tripRef.Key);
                     return ToTrip(docTrip);
                 });
-            return Workblock.Create(startTime, endTime, workblockTrips, id).Value;
+            return Workblock.Create(startTime, endTime, null, id).Value;
         }
 
         private Trip ToTrip(DocTrip doctrip)
         {
-            var passingTimes = doctrip.PassingTimes.ConvertAll<PassingTime>(pt => new PassingTime(pt.Key, pt.Time, pt.Node));
 
             if (doctrip.Orientation == "Go")
                 doctrip.Orientation = "To";
             if (doctrip.Orientation == "Return")
                 doctrip.Orientation = "From";
 
-            return Trip.Create(doctrip.Key, doctrip.Path, doctrip.Line, doctrip.Orientation, passingTimes).Value;
+            return null;
         }
     }
 }

@@ -11,6 +11,7 @@ namespace lapr5_masterdata_viagens.Domain.DriverDuties
 {
     public class DriverDuty : Entity<DriverDutyId>, IAggregateRoot
     {
+        // TODO: CREATION NEEDS REVIEW
         public string Name { get; private set; }
         public List<Workblock> Workblocks { get; private set; }
 
