@@ -1,10 +1,6 @@
-using System;
 using lapr5_masterdata_viagens.Shared;
-using System.Globalization;
-using System.Text.RegularExpressions;
 using lapr5_masterdata_viagens.Domain.Shared;
 using System.Collections.Generic;
-using lapr5_masterdata_viagens.Domain.Trips;
 
 namespace lapr5_masterdata_viagens.Domain.Workblocks
 {
