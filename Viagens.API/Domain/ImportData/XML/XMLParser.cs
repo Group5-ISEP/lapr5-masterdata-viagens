@@ -64,7 +64,7 @@ namespace lapr5_masterdata_viagens.Domain.ImportData.XML
                     }
 
                     VehicleDuty vehicleDuty = VehicleDuty.Create(docVd.Name, vehicleDutyTrips, docVd.Key).Value;
-                    vehicleDuty.AddWorkBlocks(workblocks);
+                    // vehicleDuty.AddWorkBlocks(workblocks);
                     return vehicleDuty;
                 });
 
