@@ -1,7 +1,4 @@
-using System;
 using lapr5_masterdata_viagens.Shared;
-using System.Globalization;
-using System.Text.RegularExpressions;
 using lapr5_masterdata_viagens.Domain.Shared;
 using System.Collections.Generic;
 using lapr5_masterdata_viagens.Domain.Trips;
@@ -25,7 +22,7 @@ namespace lapr5_masterdata_viagens.Domain.VehicleDuties
             this.Id = new VehicleDutyId(id);
             this.Name = name;
             this.Trips = trips;
-            this.Workblocks = null;
+            this.Workblocks = new List<Workblock>();
         }
 
         public static Result<VehicleDuty> Create(string name, List<Trip> trips, string id = null)
@@ -46,15 +43,11 @@ namespace lapr5_masterdata_viagens.Domain.VehicleDuties
         }
 
         ///<summary>
-        /// Adds the workblocks in workblocks parameter list that the attribute list doesnt have
+        /// Creates the workblocks based on the given number of workblocks and duration of each workblock
         ///</summary>
-        public void AddWorkBlocks(List<Workblock> workblocks)
+        public Result<VehicleDuty> AddWorkBlocks(int duration, int numberOfWorkblocks)
         {
-            foreach (var wb in workblocks)
-            {
-                if (this.Workblocks.Contains(wb) == false)
-                    this.Workblocks.Add(wb);
-            }
+            return Result<VehicleDuty>.Ok(this);
         }
     }
 }
