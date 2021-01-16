@@ -62,7 +62,7 @@ namespace Viagens.Tests
             var result = this.vehicleDuty.AddWorkBlocks(14500, 3);
 
             Assert.IsFalse(result.IsSuccess);
-            Assert.AreEqual("Duration of workblock cant be greater than 4 hours (14500 seconds)", result.Error);
+            Assert.AreEqual("Duration of workblock cant be greater than 4 hours (14400 seconds)", result.Error);
         }
 
         [Test]
@@ -77,10 +77,9 @@ namespace Viagens.Tests
         [Test]
         public void expectFailureIfNoMoreRoomForWorkblocks()
         {
-            var result = this.vehicleDuty.AddWorkBlocks(30, 2);
-            Assert.IsTrue(result.IsSuccess);
+            this.vehicleDuty.AddWorkBlocks(30, 2);
 
-            var result2 = this.vehicleDuty.AddWorkBlocks(15, 1);
+            var result = this.vehicleDuty.AddWorkBlocks(15, 1);
             Assert.IsFalse(result.IsSuccess);
             Assert.AreEqual("No room for more workblocks", result.Error);
         }
