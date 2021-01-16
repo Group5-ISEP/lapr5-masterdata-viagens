@@ -35,5 +35,20 @@ namespace lapr5_masterdata_viagens.Domain.VehicleDuties
 
             return Result<VehicleDutyDTO>.Ok(VehicleDutyMapper.ToDto(VehicleDutySaved));
         }
+
+        public async Task<Result<VehicleDutyDTO>> AddWorkblocks(AddWorkblocksDto dto)
+        {
+            VehicleDuty vehicleDuty = await this._repo.GetByIdAsync(new VehicleDutyId(dto.VehicleDutyId));
+            if (vehicleDuty == null)
+                return Result<VehicleDutyDTO>.Fail("Vehicle duty not found");
+
+            var result = vehicleDuty.AddWorkBlocks(dto.Duration, dto.NumberOfWorkblocks);
+            if (result.IsSuccess == false)
+                return Result<VehicleDutyDTO>.Fail(result.Error);
+
+            await _unitOfWork.CommitAsync();
+
+            return Result<VehicleDutyDTO>.Ok(VehicleDutyMapper.ToDto(vehicleDuty));
+        }
     }
 }
