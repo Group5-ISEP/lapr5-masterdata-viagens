@@ -1,10 +1,11 @@
 using lapr5_masterdata_viagens.Shared;
 using lapr5_masterdata_viagens.Domain.Shared;
 using System.Collections.Generic;
+using System;
 
 namespace lapr5_masterdata_viagens.Domain.Workblocks
 {
-    public class Workblock : Entity<WorkblockId>, IAggregateRoot
+    public class Workblock : Entity<WorkblockId>, IAggregateRoot, IComparable<Workblock>
     {
         public int StartTime { get; private set; }
         public int EndTime { get; private set; }
@@ -35,6 +36,14 @@ namespace lapr5_masterdata_viagens.Domain.Workblocks
 
             Workblock Workblock = new Workblock(starttime, endtime, trips, id);
             return Result<Workblock>.Ok(Workblock);
+        }
+
+        public int CompareTo(Workblock other)
+        {
+            if (this.StartTime < other.StartTime)
+                return -1;
+
+            return 1;
         }
     }
 }
