@@ -1,4 +1,4 @@
-using System.Globalization;
+using lapr5_masterdata_viagens.Domain.Workblocks;
 
 namespace lapr5_masterdata_viagens.Domain.VehicleDuties
 {
@@ -10,8 +10,14 @@ namespace lapr5_masterdata_viagens.Domain.VehicleDuties
             dto.Id = vehicleDuty.Id.AsString();
             dto.Name = vehicleDuty.Name;
             dto.Trips = vehicleDuty.Trips.ConvertAll<string>(trip => trip.Id.AsString());
-            if (dto.Workblocks != null)
-                dto.Workblocks = vehicleDuty.Workblocks.ConvertAll<string>(wb => wb.Id.AsString());
+            dto.Workblocks = vehicleDuty.Workblocks.ConvertAll<WorkblockDto>(wb =>
+                new WorkblockDto()
+                {
+                    Id = wb.Id.AsString(),
+                    StartTime = wb.StartTime,
+                    EndTime = wb.EndTime,
+                    TripsIDs = wb.TripsIDs
+                });
             return dto;
         }
     }
