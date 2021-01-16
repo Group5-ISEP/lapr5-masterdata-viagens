@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace lapr5_masterdata_viagens.Controllers
 {
     [ApiController]
-    [Route("api/vehicleduty")]
+    [Route("api/vehicleduty/")]
     public class VehicleDutyController : ControllerBase
     {
         private readonly VehicleDutyService _service;
@@ -25,6 +25,16 @@ namespace lapr5_masterdata_viagens.Controllers
                 return Conflict(result.Error);
             }
             return Created("api/vehicleduty/" + result.Value.Id, result.Value);
+        }
+
+        [HttpPost("workblocks")]
+        public async Task<ActionResult<VehicleDutyDTO>> AddWorkblocks(AddWorkblocksDto dto)
+        {
+            var result = await _service.AddWorkblocks(dto);
+            if (result.IsSuccess == false)
+                return Conflict(result.Error);
+
+            return Ok(result.Value);
         }
     }
 }
