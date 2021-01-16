@@ -2,10 +2,11 @@ using lapr5_masterdata_viagens.Shared;
 using lapr5_masterdata_viagens.Domain.Shared;
 using lapr5_masterdata_viagens.Domain.Path;
 using System.Collections.Generic;
+using System;
 
 namespace lapr5_masterdata_viagens.Domain.Trips
 {
-    public class Trip : Entity<TripId>, IAggregateRoot
+    public class Trip : Entity<TripId>, IAggregateRoot, IComparable<Trip>
     {
         public string PathID { get; private set; }
         public string LineID { get; private set; }
@@ -98,6 +99,19 @@ namespace lapr5_masterdata_viagens.Domain.Trips
             }
 
             return true;
+        }
+
+        /// <summary>
+        /// Compares by first passing time. If this is less than other, then returns -1, otherwise 1.
+        /// </summary>
+        public int CompareTo(Trip other)
+        {
+            var thisPassingTimes = new List<PassingTime>(this.PassingTimes);
+            var otherPassingTimes = new List<PassingTime>(other.PassingTimes);
+            thisPassingTimes.Sort();
+            other.PassingTimes.Sort();
+
+            return thisPassingTimes[0].CompareTo(otherPassingTimes[0]);
         }
 
     }

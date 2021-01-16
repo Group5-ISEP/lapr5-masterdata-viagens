@@ -4,7 +4,7 @@ using lapr5_masterdata_viagens.Shared;
 
 namespace lapr5_masterdata_viagens.Domain.Trips
 {
-    public class PassingTime : Entity<PassingTimeId>, IAggregateRoot
+    public class PassingTime : Entity<PassingTimeId>, IAggregateRoot, IComparable<PassingTime>
     {
         public int TimeInstant { get; private set; }
 
@@ -32,6 +32,17 @@ namespace lapr5_masterdata_viagens.Domain.Trips
                 return Result<PassingTime>.Fail("Passing time node id cant be null");
 
             return Result<PassingTime>.Ok(new PassingTime(timeInstant, nodeId, id));
+        }
+
+        /// <summary>
+        /// Compares by time instant. If this is less than other, then returns -1, otherwise 1.
+        /// </summary>
+        public int CompareTo(PassingTime other)
+        {
+            if (this.TimeInstant < other.TimeInstant)
+                return -1;
+
+            return 1;
         }
     }
 }
