@@ -47,7 +47,8 @@ namespace lapr5_masterdata_viagens.Domain.Trips
                 if (CheckValid(tripDTO, pathDTO, passingTimes) == false)
                     return Result<Trip>.Fail("Trip dto doesnt match the path dto and passing times generated");
 
-                return Result<Trip>.Ok(new Trip(PathId, LineId, Orientation, passingTimes, tripDTO.Id));
+                List<PassingTime> passingTimesFromDto = tripDTO.PassingTimes.ConvertAll<PassingTime>(dto => PassingTime.Create(dto.TimeInstant, dto.NodeID, dto.Id).Value);
+                return Result<Trip>.Ok(new Trip(tripDTO.PathID, tripDTO.LineID, tripDTO.Orientation, passingTimesFromDto, tripDTO.Id));
             }
 
             return Result<Trip>.Ok(new Trip(PathId, LineId, Orientation, passingTimes));
