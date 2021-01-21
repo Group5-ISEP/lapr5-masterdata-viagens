@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using lapr5_masterdata_viagens.Domain.Path;
+using lapr5_masterdata_viagens.Domain.Node;
 using lapr5_masterdata_viagens.Infrastructure.MDRHttpClient;
 using lapr5_masterdata_viagens.Shared;
 
@@ -64,5 +65,15 @@ namespace Viagens.Tests
             return Result<List<PathDTO>>.Ok(new List<PathDTO>());
 
         }
+
+        public async Task<Result<NodeDto>> FetchNodeById(string nodeId)
+        {
+            return Result<NodeDto>.Ok(new NodeDto()
+            {
+                Name = "Boavista",
+                ShortName = "BOAV"
+            });
+        }
+
     }
 }
