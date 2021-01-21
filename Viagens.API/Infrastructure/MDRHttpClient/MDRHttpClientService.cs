@@ -3,6 +3,7 @@ using System.Net.Http;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using lapr5_masterdata_viagens.Domain.Path;
+using lapr5_masterdata_viagens.Domain.Node;
 using lapr5_masterdata_viagens.Shared;
 using System.Text.Json;
 
@@ -33,5 +34,23 @@ namespace lapr5_masterdata_viagens.Infrastructure.MDRHttpClient
 
             return Result<List<PathDTO>>.Ok(result);
         }
+
+        public async Task<Result<NodeDto>> FetchNodeById(string nodeId)
+        {
+            var response = await Client.GetAsync(
+                        "api/node/" + nodeId);
+
+            response.EnsureSuccessStatusCode();
+
+
+            using var responseStream = await response.Content.ReadAsStreamAsync();
+
+            var result = await JsonSerializer.DeserializeAsync
+                <NodeDto>(responseStream);
+
+            return Result<NodeDto>.Ok(result);
+
+        }
+
     }
 }
