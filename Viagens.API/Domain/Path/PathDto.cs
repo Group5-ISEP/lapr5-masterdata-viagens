@@ -12,6 +12,10 @@ namespace lapr5_masterdata_viagens.Domain.Path
         public string LineId { get; set; }
         [JsonPropertyName("direction")]
         public string Orientation { get; set; }
+        [JsonPropertyName("firstNode")]
+        public string FirstNodeId { get; set; }
+        [JsonPropertyName("lastNode")]
+        public string LastNodeId { get; set; }
         [JsonPropertyName("isEmpty")]
         public bool IsEmpty { get; set; }
         [JsonPropertyName("segmentList")]
