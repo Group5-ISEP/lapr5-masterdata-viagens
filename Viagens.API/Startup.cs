@@ -38,11 +38,22 @@ namespace lapr5_masterdata_viagens
             Configuration = configuration;
         }
 
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            services.AddCors(options =>
+                    {
+                        options.AddPolicy(name: MyAllowSpecificOrigins,
+                                          builder =>
+                                          {
+                                              builder.WithOrigins("http://localhost:4200");
+                                          });
+                    });
+
             services.AddDbContext<ViagensDbContext>(opt =>
                 opt.UseSqlite("Data Source=db/teste.db")
                 .ReplaceService<IValueConverterSelector, StronglyEntityIdValueConverterSelector>());
@@ -82,9 +93,11 @@ namespace lapr5_masterdata_viagens
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "lapr5_masterdata_viagens v1"));
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors(MyAllowSpecificOrigins);
 
             app.UseAuthorization();
 
