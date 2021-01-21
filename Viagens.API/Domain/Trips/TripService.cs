@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using lapr5_masterdata_viagens.Shared;
 using lapr5_masterdata_viagens.Domain.Shared;
 using lapr5_masterdata_viagens.Domain.Path;
+using lapr5_masterdata_viagens.Domain.Node;
 using lapr5_masterdata_viagens.Infrastructure.MDRHttpClient;
 
 namespace lapr5_masterdata_viagens.Domain.Trips
@@ -115,5 +116,34 @@ namespace lapr5_masterdata_viagens.Domain.Trips
 
             return Result<List<Trip>>.Ok(TripList);
         }
+
+        public async Task<Result<NodeTimetableDto>> GetNodeTimetable(string nodeId)
+        {
+            var trips = await this._repo.GetByNode(nodeId);
+
+            NodeTimetableDto dto = new NodeTimetableDto()
+            {
+                schedule = new List<BusPassingDto>()
+            };
+
+            foreach (var trip in trips)
+            {
+                var pathDtoList = (await this._client.FetchPathsByLine(trip.LineID)).Value;
+                var pathDto = pathDtoList.Find(pathDto => pathDto.PathId == trip.PathID);
+                var pathLastNode = (await this._client.FetchNodeById(pathDto.LastNodeId)).Value;
+                var timeInstant = trip.PassingTimes.Find(pt => pt.NodeID == nodeId).TimeInstant;
+
+                dto.schedule.Add(new BusPassingDto()
+                {
+                    Line = trip.LineID,
+                    DestinationName = pathLastNode.Name,
+                    TimeInstant = timeInstant,
+                });
+            }
+
+            return Result<NodeTimetableDto>.Ok(dto);
+        }
     }
+
+
 }
