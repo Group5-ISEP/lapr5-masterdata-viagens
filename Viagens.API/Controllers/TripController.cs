@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using lapr5_masterdata_viagens.Domain.Trips;
+using lapr5_masterdata_viagens.Domain.Node;
 using System.Collections.Generic;
 
 namespace lapr5_masterdata_viagens.Controllers
@@ -31,6 +32,17 @@ namespace lapr5_masterdata_viagens.Controllers
         public async Task<ActionResult<List<TripDTO>>> GetByLine(string lineId)
         {
             var result = await _service.GetByLine(lineId);
+            if (result.IsSuccess == false)
+            {
+                return Conflict(result.Error);
+            }
+            return Ok(result.Value);
+        }
+
+        [HttpGet("timetable/{nodeId}")]
+        public async Task<ActionResult<NodeTimetableDto>> GetByNode(string nodeId)
+        {
+            var result = await _service.GetNodeTimetable(nodeId);
             if (result.IsSuccess == false)
             {
                 return Conflict(result.Error);

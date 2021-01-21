@@ -24,9 +24,8 @@ namespace lapr5_masterdata_viagens.Infrastructure.Trips
 
         public async Task<List<Trip>> GetByNode(string nodeId)
         {
-            var list = this._objs.Include(t => t.PassingTimes).Where(t => t.PassingTimes.Find(pt => pt.NodeID == nodeId) != null).ToList();
-
-            return list;
+            var list = this._objs.Include(t => t.PassingTimes).ToList();
+            return list.FindAll(trip => trip.PassingTimes.Find(pt => pt.NodeID == nodeId) != null);
         }
     }
 }
