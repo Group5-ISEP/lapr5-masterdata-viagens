@@ -37,5 +37,10 @@ namespace Viagens.Tests
             return _list.FindAll(t => t.LineID == lineId);
         }
 
+        public async Task<List<Trip>> GetByNode(string nodeId)
+        {
+            return _list.FindAll(t => t.PassingTimes.Find(pt => pt.NodeID == nodeId) != null);
+        }
+
     }
 }
