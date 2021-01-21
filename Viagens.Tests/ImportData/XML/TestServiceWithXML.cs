@@ -17,7 +17,7 @@ namespace Viagens.Tests
         }
 
 
-        [Test]
+     /*    [Test]
         public void expectSuccessIfEveythingValid()
         {
             var testProjectPath = GetProjectDirectory();
@@ -30,7 +30,7 @@ namespace Viagens.Tests
             fileStream.Close();
 
             Assert.IsTrue(result.IsSuccess);
-        }
+        } */
 
     }
 }
