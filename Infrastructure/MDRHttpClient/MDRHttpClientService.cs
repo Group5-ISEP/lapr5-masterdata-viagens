@@ -15,8 +15,13 @@ namespace lapr5_masterdata_viagens.Infrastructure.MDRHttpClient
 
         public MDRHttpClientService(HttpClient client)
         {
-            client.BaseAddress = new Uri("http://localhost:3000/");
+            string address;
+            /* if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
+                address = "http://localhost:3000/";
+            else */
+                address = "https://lapr5-3di-g5-masterdata.herokuapp.com/";
 
+            client.BaseAddress = new Uri(address);
             Client = client;
         }
 
