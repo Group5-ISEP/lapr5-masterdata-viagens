@@ -1,8 +1,8 @@
-$API_PATH="./Viagens.API/lapr5-masterdata-viagens.csproj"
+$API_PATH="./lapr5-masterdata-viagens.csproj"
 $TESTS_PATH="./Viagens.Tests/Viagens.Tests.csproj"
 
 ### Check for dir, if not found create it using the mkdir ##
-$path = "./Viagens.API/db"
+$path = "./db"
 If(!(Test-Path $path))
 {
       New-Item -ItemType Directory -Force -Path $path

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-readonly API_PATH=./Viagens.API/lapr5-masterdata-viagens.csproj
+readonly API_PATH=./lapr5-masterdata-viagens.csproj
 
 if [ $# -eq 0 ]
   then

@@ -23,16 +23,8 @@ or
 
 ## Run project
 
-Run the script file for
-
 ```
-#BASH
-./run.sh
-
-or
-
-#POWERSHELL
-./run.ps
+dotnet run
 ```
 
 ## Test project
