@@ -9,6 +9,7 @@ If(!(Test-Path $path))
 
 #Install SQLite driver
 dotnet add $API_PATH package Microsoft.EntityFrameworkCore.Sqlite -v 5.0.1
+dotnet add $API_PATH package Microsoft.EntityFrameworkCore.SqlServer -v 5.0.1
 dotnet add $API_PATH package Microsoft.EntityFrameworkCore.Design -v 5.0.1
 dotnet add $API_PATH package NUnit -v 3.12.0
 

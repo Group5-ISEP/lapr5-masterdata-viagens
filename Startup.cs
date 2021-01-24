@@ -55,7 +55,8 @@ namespace lapr5_masterdata_viagens
                     });
 
             services.AddDbContext<ViagensDbContext>(opt =>
-                opt.UseSqlite("Data Source=db/teste.db")
+                //opt.UseSqlite("Data Source=db/teste.db")
+                opt.UseSqlServer(Configuration.GetConnectionString("AzureDb"))
                 .ReplaceService<IValueConverterSelector, StronglyEntityIdValueConverterSelector>());
 
             services.AddTransient<IUnitOfWork, UnitOfWork>();
