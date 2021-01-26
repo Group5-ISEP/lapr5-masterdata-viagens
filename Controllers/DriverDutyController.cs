@@ -27,10 +27,10 @@ namespace lapr5_masterdata_viagens.Controllers
             return Created("api/DriverDuty/" + result.Value.Id, result.Value);
         }
 
-        /*  [HttpGet]
-         public async Task<ActionResult<IEnumerable<DriverDutyDTO>>> GetAll()
-         {
-             return await _service.GetAllAsync();
-         } */
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<DriverDutyDTO>>> GetAll()
+        {
+            return await _service.GetAllAsync();
+        }
     }
 }

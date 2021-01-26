@@ -28,5 +28,14 @@ namespace lapr5_masterdata_viagens.Domain.DriverDuties
 
             return Result<DriverDutyDTO>.Ok(DriverDutyMapper.ToDto(DriverDutySaved));
         }
+
+        public async Task<List<DriverDutyDTO>> GetAllAsync()
+        {
+            var list = await this._repo.GetAllAsync();
+
+            List<DriverDutyDTO> listDto = list.ConvertAll<DriverDutyDTO>(v => DriverDutyMapper.ToDto(v));
+
+            return listDto;
+        }
     }
 }
