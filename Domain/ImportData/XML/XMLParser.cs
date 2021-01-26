@@ -87,7 +87,7 @@ namespace lapr5_masterdata_viagens.Domain.ImportData.XML
                         return ToWorkBlock(docWorkBlock);
                     });
 
-                    return DriverDuty.Create(docDd.Name, workblocks, docDd.Key).Value;
+                    return DriverDuty.Create(docDd.Name, docDd.Key).Value;
                 });
 
                 return Result<List<DriverDuty>>.Ok(driverDuties);
