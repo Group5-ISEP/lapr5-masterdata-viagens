@@ -11,7 +11,6 @@ namespace lapr5_masterdata_viagens.Domain.DriverDuties
 {
     public class DriverDuty : Entity<DriverDutyId>, IAggregateRoot
     {
-        // TODO: CREATION NEEDS REVIEW
         public string Name { get; private set; }
         public List<Workblock> Workblocks { get; private set; }
 
@@ -20,16 +19,18 @@ namespace lapr5_masterdata_viagens.Domain.DriverDuties
         {
             //FOR ORM
         }
-        private DriverDuty(string id, string name, List<Workblock> workblocks)
+        private DriverDuty(string id, string name)
         {
             this.Id = new DriverDutyId(id);
             this.Name = name;
-            this.Workblocks = workblocks;
+            this.Workblocks = new List<Workblock>();
         }
 
-        public static Result<DriverDuty> Create(string name, List<Workblock> workblocks, string id = null)
+        public static Result<DriverDuty> Create(string name, string id = null)
         {
-            DriverDuty DriverDuty = new DriverDuty(id, name, workblocks);
+            if (name == null || name.Length == 0)
+                return Result<DriverDuty>.Fail("Name cant be empty");
+            DriverDuty DriverDuty = new DriverDuty(id, name);
             return Result<DriverDuty>.Ok(DriverDuty);
         }
     }

@@ -68,8 +68,9 @@ namespace lapr5_masterdata_viagens
             services.AddTransient<TripService>();
             services.AddTransient<IVehicleDutyRepo, VehicleDutyRepo>();
             services.AddTransient<VehicleDutyService>();
-            services.AddTransient<ImportDataService>();
             services.AddTransient<IDriverDutyRepo, DriverDutyRepo>();
+            services.AddTransient<DriverDutyService>();
+            services.AddTransient<ImportDataService>();
 
             services.AddHttpClient<MDRHttpClientInterface, MDRHttpClientService>();
 
