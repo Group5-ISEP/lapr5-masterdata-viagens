@@ -50,5 +50,14 @@ namespace lapr5_masterdata_viagens.Domain.VehicleDuties
 
             return Result<VehicleDutyDTO>.Ok(VehicleDutyMapper.ToDto(vehicleDuty));
         }
+
+        public async Task<List<VehicleDutyDTO>> GetAllAsync()
+        {
+            var list = await this._repo.GetAllAsync();
+
+            List<VehicleDutyDTO> listDto = list.ConvertAll<VehicleDutyDTO>(v => VehicleDutyMapper.ToDto(v));
+
+            return listDto;
+        }
     }
 }

@@ -36,5 +36,11 @@ namespace lapr5_masterdata_viagens.Controllers
 
             return Ok(result.Value);
         }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<VehicleDutyDTO>>> GetAll()
+        {
+            return await _service.GetAllAsync();
+        }
     }
 }

@@ -2,6 +2,7 @@ using lapr5_masterdata_viagens.Domain.VehicleDuties;
 using lapr5_masterdata_viagens.Infrastructure.Shared;
 using System.Threading.Tasks;
 using System.Linq;
+using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
 namespace lapr5_masterdata_viagens.Infrastructure.VehicleDuties
@@ -20,6 +21,15 @@ namespace lapr5_masterdata_viagens.Infrastructure.VehicleDuties
                 .ThenInclude(t => t.PassingTimes)
                 .Include(vd => vd.Workblocks)
                 .Where(x => id.Equals(x.Id)).FirstOrDefaultAsync();
+        }
+
+        public new async Task<List<VehicleDuty>> GetAllAsync()
+        {
+            return this._objs
+                .Include(vd => vd.Workblocks)
+                .Include(vd => vd.Trips)
+                .ThenInclude(t => t.PassingTimes)
+                .ToList();
         }
     }
 }
